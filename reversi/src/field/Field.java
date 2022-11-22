@@ -1,7 +1,10 @@
 package field;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 final public class Field {
     private PointColor[][] field = new PointColor[8][8];
@@ -32,6 +35,24 @@ final public class Field {
         return answ;
     }
 
+    public void printBoard() {
+        System.out.print("%\t");
+        System.out.println(
+                IntStream.rangeClosed(1, 8).boxed().map(String::valueOf).collect(Collectors.joining("\t"))
+        );
+
+        for (int i = 0; i < 8; i++) {
+            System.out.printf("%d\t", i+1);
+            System.out.println(
+                    Arrays.stream(field[i]).map(PointColorHelper::pointToString).collect(Collectors.joining("\t"))
+            );
+        }
+    }
+
+    public Integer countPoints(PointColor p) {
+        return Math.toIntExact(Arrays.stream(field).flatMap(Arrays::stream).filter(it -> it == p).count());
+    }
+
     public void placePoint(Coordinates crd, PointColor p) throws IllegalArgumentException {
         if (!FieldUtils.isValidCoordinates(crd)) {
             throw new IllegalArgumentException("Point is out of Field!");
@@ -49,5 +70,10 @@ final public class Field {
         ) {
             setPointColor(toFlip, p);
         }
+    }
+
+    public void reversePointPlacement() throws IllegalStateException {
+        // TODO fixme
+        return;
     }
 }

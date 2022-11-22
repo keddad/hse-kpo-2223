@@ -5,3 +5,4 @@ public enum PointColor {
     Black,
     White
 }
+
