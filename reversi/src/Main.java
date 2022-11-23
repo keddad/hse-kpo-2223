@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 public class Main {
     public static void main(String[] args) {
         Enemy enemyType = Enemy.Player;
+        Boolean printBest = false;
 
         if (Arrays.stream(args).anyMatch(Predicate.isEqual("--ai"))) {
             enemyType = Enemy.BasicMachine;
@@ -15,7 +16,11 @@ public class Main {
             enemyType = Enemy.AdvancedMachine;
         }
 
-        Game g = new Game(enemyType);
+        if (Arrays.stream(args).anyMatch(Predicate.isEqual("--printbest"))) {
+            printBest = true;
+        }
+
+        Game g = new Game(enemyType, printBest);
         g.run();
     }
 }

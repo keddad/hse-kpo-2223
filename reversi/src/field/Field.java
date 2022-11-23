@@ -9,6 +9,25 @@ import java.util.stream.IntStream;
 final public class Field {
     private PointColor[][] field = new PointColor[8][8];
 
+    public Field() {
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j)  {
+                field[i][j] = PointColor.Empty;
+            }
+        }
+
+
+        field[3][3] = PointColor.White;
+        field[4][4] = PointColor.White;
+
+        field[3][4] = PointColor.Black;
+        field[4][3] = PointColor.Black;
+
+        fieldHisory.add(field);
+    }
+
+    private List<PointColor[][]> fieldHisory = new ArrayList<>();
+
     public PointColor getPointColor(Coordinates crd) throws IllegalArgumentException {
         if (!FieldUtils.isValidCoordinates(crd)) {
             throw new IllegalArgumentException("Point is out of Field!");
@@ -35,18 +54,25 @@ final public class Field {
         return answ;
     }
 
-    public void printBoard() {
+    public void printBoard(PointColor player) {
         System.out.print("%\t");
-        System.out.println(
+        System.out.print(
                 IntStream.rangeClosed(1, 8).boxed().map(String::valueOf).collect(Collectors.joining("\t"))
         );
 
+        List<Coordinates> c = FieldUtils.possibleMoves(player, this);
+
         for (int i = 0; i < 8; i++) {
-            System.out.printf("%d\t", i+1);
-            System.out.println(
-                    Arrays.stream(field[i]).map(PointColorHelper::pointToString).collect(Collectors.joining("\t"))
-            );
+            System.out.printf("\n%d\t", i+1);
+
+            for (int j = 0; j < 8; ++j) {
+                Coordinates current = new Coordinates(i+1, j+1);
+                String point = c.contains(current) ? "." : PointColorHelper.pointToString(field[i][j]);
+                System.out.printf("%s\t", point);
+            }
         }
+
+        System.out.println();
     }
 
     public Integer countPoints(PointColor p) {
@@ -66,14 +92,22 @@ final public class Field {
             throw new IllegalArgumentException("Move is invalid!");
         }
 
-        for (Coordinates toFlip : FieldUtils.flippedPoints(crd, p, this)
+        fieldHisory.add(field);
+
+        for (Coordinates toFlip : FieldUtils.flippedPoint(crd, p, this)
         ) {
             setPointColor(toFlip, p);
         }
+
+        setPointColor(crd, p);
     }
 
-    public void reversePointPlacement() throws IllegalStateException {
-        // TODO fixme
-        return;
+    public void reversePointPlacement(Integer steps) throws IllegalStateException {
+        if (steps >= fieldHisory.size()) {
+            throw new IllegalStateException("Can't go back that far");
+        }
+
+        field = fieldHisory.get(fieldHisory.size() - steps);
+        fieldHisory = fieldHisory.subList(0, fieldHisory.size() - steps);
     }
 }

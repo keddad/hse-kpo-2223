@@ -4,7 +4,7 @@ import field.Field;
 
 public class BasicAiActor implements IActor {
     @Override
-    public void performMove(Field f) {
-
+    public Boolean requestAction(Field f) {
+        return false;
     }
 }

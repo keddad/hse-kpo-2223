@@ -30,12 +30,18 @@ public class FieldUtils {
         return answ.stream().toList();
     }
 
-    private static Boolean isPointBordered(Coordinates crd, Field f) {
+    private static Boolean isPointBordered(Coordinates crd, Field f, PointColor targetColor) {
         for (int x_diff = -1; x_diff <= 1; x_diff++) {
             for (int y_diff = -1; y_diff <= 1; y_diff++) {
                 if (x_diff == 0 && y_diff == 0) continue;
 
-                if (f.getPointColor(new Coordinates(crd.x() + x_diff, crd.y() + y_diff)) != PointColor.Empty) {
+                Coordinates newcrd = new Coordinates(crd.x() + x_diff, crd.y() + y_diff);
+
+                if (!isValidCoordinates(newcrd)) {
+                    continue;
+                }
+
+                if (f.getPointColor(newcrd) == targetColor) {
                     return true;
                 }
             }
@@ -43,8 +49,18 @@ public class FieldUtils {
 
         return false;
     }
+
     public static Boolean isValidCoordinates(Coordinates crd) {
         return crd.x() >= 1 && crd.x() <= 8 && crd.y() >= 1 && crd.y() <= 8;
+    }
+
+    public static Integer pointDistance(Coordinates a, Coordinates b) {
+        // Only works if they are in one line
+        if (a.x().equals(b.x())) {
+            return abs(a.y() - b.y());
+        } else {
+            return abs(a.x() - b.x());
+        }
     }
 
     public static List<Coordinates> flippedPoints(Coordinates a, Coordinates b, PointColor p, Field f) {
@@ -83,9 +99,9 @@ public class FieldUtils {
                 Coordinates crds = null;
 
                 if (a.y() < b.y()) {
-                    crds = new Coordinates(a.x() + diff, a.y() + diff);
+                    crds = new Coordinates(a.x() - diff, a.y() + diff);
                 } else {
-                    crds = new Coordinates(a.x() - diff, a.y() - diff);
+                    crds = new Coordinates(a.x() + diff, a.y() - diff);
                 }
 
                 if (f.getPointColor(crds) == toFlip) {
@@ -97,7 +113,7 @@ public class FieldUtils {
         return answ;
     }
 
-    public static List<Coordinates> flippedPoints(Coordinates crd, PointColor p, Field f) {
+    public static List<Coordinates> flippedPoint(Coordinates crd, PointColor p, Field f) {
         // Points flipped when placing a point of certain color
         List<Coordinates> flippedPoints = expandPoint(crd)
                 .stream()
@@ -107,10 +123,20 @@ public class FieldUtils {
 
         return flippedPoints;
     }
+
+    private static Boolean verifyFlipped(Coordinates a, Coordinates b, PointColor p, Field f) {
+        List<Coordinates> flipped = flippedPoints(a, b, p, f);
+
+        if (flipped.isEmpty()) return false;
+        return flipped.size() == pointDistance(a, b) - 1;
+    }
+
     public static List<Coordinates> possibleMoves(PointColor p, Field f) throws IllegalArgumentException {
         if (p == PointColor.Empty) {
             throw new IllegalArgumentException("Can't place Point without a color!");
         }
+
+        PointColor enemyColor = p == PointColor.White ? PointColor.Black : PointColor.White;
 
         // functional programming was a mistake
         List<Coordinates> possibleCoordinates = f.getColoredPoints(p)
@@ -119,10 +145,10 @@ public class FieldUtils {
                 .entrySet()
                 .stream()
                 .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> f.getPointColor(y) == PointColor.Empty).toList()))
-                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> isPointBordered(y, f)).toList()))
-                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> !flippedPoints(it.getKey(), y, p, f).isEmpty()).toList()))
+                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> isPointBordered(y, f, enemyColor)).toList()))
+                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> verifyFlipped(it.getKey(), y, p, f)).toList()))
                 .map(Pair::getValue)
-                .flatMap(Collection::stream).toList();
+                .flatMap(Collection::stream).distinct().toList();
 
         return possibleCoordinates;
     }
