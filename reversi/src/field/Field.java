@@ -11,7 +11,7 @@ final public class Field {
 
     public Field() {
         for (int i = 0; i < 8; ++i) {
-            for (int j = 0; j < 8; ++j)  {
+            for (int j = 0; j < 8; ++j) {
                 field[i][j] = PointColor.Empty;
             }
         }
@@ -23,7 +23,7 @@ final public class Field {
         field[3][4] = PointColor.Black;
         field[4][3] = PointColor.Black;
 
-        fieldHisory.add(field);
+        fieldHisory.add(Arrays.stream(field).map(PointColor[]::clone).toArray(PointColor[][]::new)); // the fact that i have to do this is horrible
     }
 
     private List<PointColor[][]> fieldHisory = new ArrayList<>();
@@ -56,17 +56,15 @@ final public class Field {
 
     public void printBoard(PointColor player) {
         System.out.print("%\t");
-        System.out.print(
-                IntStream.rangeClosed(1, 8).boxed().map(String::valueOf).collect(Collectors.joining("\t"))
-        );
+        System.out.print(IntStream.rangeClosed(1, 8).boxed().map(String::valueOf).collect(Collectors.joining("\t")));
 
         List<Coordinates> c = FieldUtils.possibleMoves(player, this);
 
         for (int i = 0; i < 8; i++) {
-            System.out.printf("\n%d\t", i+1);
+            System.out.printf("\n%d\t", i + 1);
 
             for (int j = 0; j < 8; ++j) {
-                Coordinates current = new Coordinates(i+1, j+1);
+                Coordinates current = new Coordinates(i + 1, j + 1);
                 String point = c.contains(current) ? "." : PointColorHelper.pointToString(field[i][j]);
                 System.out.printf("%s\t", point);
             }
@@ -92,22 +90,21 @@ final public class Field {
             throw new IllegalArgumentException("Move is invalid!");
         }
 
-        fieldHisory.add(field);
-
-        for (Coordinates toFlip : FieldUtils.flippedPoint(crd, p, this)
-        ) {
+        for (Coordinates toFlip : FieldUtils.flippedPoint(crd, p, this)) {
             setPointColor(toFlip, p);
         }
 
         setPointColor(crd, p);
+
+        fieldHisory.add(Arrays.stream(field).map(PointColor[]::clone).toArray(PointColor[][]::new));
     }
 
     public void reversePointPlacement(Integer steps) throws IllegalStateException {
-        if (steps >= fieldHisory.size()) {
+        if (steps > fieldHisory.size()) {
             throw new IllegalStateException("Can't go back that far");
         }
 
-        field = fieldHisory.get(fieldHisory.size() - steps);
+        field = fieldHisory.get(fieldHisory.size() - steps - 1);
         fieldHisory = fieldHisory.subList(0, fieldHisory.size() - steps);
     }
 }

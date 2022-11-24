@@ -20,8 +20,23 @@ public class PlayerActor implements IActor {
         String choise = Cmd.getUserOption(Arrays.asList("r", "t"));
 
         if (choise.equals("r")) {
-            System.out.println("meow");
-            return false;
+            System.out.println("How many turns back?");
+
+            Integer n;
+
+            while (true) {
+                n = Cmd.getInt();
+
+                try {
+                    f.reversePointPlacement(n);
+                    break;
+                } catch (IllegalStateException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            return n % 2 == 0;
+
         } else {
             while (true) {
                 System.out.println("Input coordinates as two digits");

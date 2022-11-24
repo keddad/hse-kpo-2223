@@ -152,4 +152,5 @@ public class FieldUtils {
 
         return possibleCoordinates;
     }
-}
+
+ }
