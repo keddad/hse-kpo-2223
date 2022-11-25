@@ -99,7 +99,7 @@ public class FieldUtils {
                 Coordinates crds = null;
 
                 if (a.y() < b.y()) {
-                    crds = new Coordinates(a.x() - diff, a.y() + diff);
+                    crds = new Coordinates(a.x() + diff, a.y() + diff);
                 } else {
                     crds = new Coordinates(a.x() + diff, a.y() - diff);
                 }

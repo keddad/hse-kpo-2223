@@ -9,12 +9,12 @@ import field.PointColor;
 import utils.Cmd;
 import utils.Enemy;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Game {
     private final IActor opponent;
+    // private final IActor player = new PlayerActor(PointColor.White);
     private final IActor player = new PlayerActor(PointColor.White);
     private int bestScore = 0;
     private Boolean printBest = false;
@@ -30,7 +30,7 @@ public class Game {
             }
             case BasicMachine -> {
                 System.out.println("Playing in PVE mode, basic computer");
-                yield new BasicAiActor();
+                yield new BasicAiActor(PointColor.Black);
             }
             case AdvancedMachine -> {
                 System.out.println("Playing in PVP mode, advanced computer");
