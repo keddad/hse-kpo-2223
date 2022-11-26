@@ -34,7 +34,7 @@ public class Game {
             }
             case AdvancedMachine -> {
                 System.out.println("Playing in PVP mode, advanced computer");
-                yield new AdvancedAiActor();
+                yield new AdvancedAiActor(enemyColor);
             }
         };
 
@@ -89,7 +89,7 @@ public class Game {
         if (playerPoints > enemyPoints) {
             System.out.println("Player won!");
         } else if (playerPoints < enemyPoints) {
-            System.out.println("Machines are better as usual.");
+            System.out.println("Enemy won!");
         } else {
             System.out.println("Tie.");
         }

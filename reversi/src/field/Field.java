@@ -23,7 +23,18 @@ final public class Field {
         field[3][4] = PointColor.Black;
         field[4][3] = PointColor.Black;
 
-        fieldHisory.add(Arrays.stream(field).map(PointColor[]::clone).toArray(PointColor[][]::new)); // the fact that i have to do this is horrible
+        saveToHistory();
+    }
+
+    public Field(Field oldField) {
+        // Copy-constuctor for forward prediction
+        // Doesn't copy history, doesn't support history revision on generated object
+
+        for (int i = 0; i < 8; i++) {
+            System.arraycopy(oldField.field[i], 0, field[i], 0, 8);
+        }
+
+        saveToHistory();
     }
 
     private List<PointColor[][]> fieldHisory = new ArrayList<>();
@@ -77,6 +88,14 @@ final public class Field {
         return Math.toIntExact(Arrays.stream(field).flatMap(Arrays::stream).filter(it -> it == p).count());
     }
 
+    private void saveToHistory() { // god I hate java and reference types
+        fieldHisory.add(new PointColor[8][8]);
+
+        for (int i = 0; i < 8; i++) {
+            System.arraycopy(field[i], 0, fieldHisory.get(fieldHisory.size() - 1)[i], 0, 8);
+        }
+    }
+
     public void placePoint(Coordinates crd, PointColor p) throws IllegalArgumentException {
         if (!FieldUtils.isValidCoordinates(crd)) {
             throw new IllegalArgumentException("Point is out of Field!");
@@ -96,11 +115,11 @@ final public class Field {
 
         setPointColor(crd, p);
 
-        fieldHisory.add(Arrays.stream(field).map(PointColor[]::clone).toArray(PointColor[][]::new));
+        saveToHistory();
     }
 
     public void reversePointPlacement(Integer steps) throws IllegalStateException {
-        if (steps > fieldHisory.size()) {
+        if (steps >= fieldHisory.size() || steps == 0) {
             throw new IllegalStateException("Can't go back that far");
         }
 
