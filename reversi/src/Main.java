@@ -1,24 +1,25 @@
+import utils.Cmd;
 import utils.Enemy;
 
 import java.util.Arrays;
-import java.util.function.Predicate;
 
 public class Main {
-    public static void main(String[] args) {
-        Enemy enemyType = Enemy.Player;
-        Boolean printBest = false;
+    public static void main(String[] args) { // Потому что если сделать флажки как нормальные люди то у кого-то что-то отвалится блин бесит
+        Enemy enemyType;
+        Boolean printBest;
 
-        if (Arrays.stream(args).anyMatch(Predicate.isEqual("--ai"))) {
-            enemyType = Enemy.BasicMachine;
-        }
+        System.out.println("What type of enemy? [ai/smartai/player]");
+        enemyType = switch (Cmd.getUserOption(Arrays.asList("ai", "smartai", "player"))) {
+            case "ai" -> Enemy.BasicMachine;
+            case "smartai" -> Enemy.AdvancedMachine;
+            default -> Enemy.Player;
+        };
 
-        if (Arrays.stream(args).anyMatch(Predicate.isEqual("--smartai"))) {
-            enemyType = Enemy.AdvancedMachine;
-        }
-
-        if (Arrays.stream(args).anyMatch(Predicate.isEqual("--printbest"))) {
-            printBest = true;
-        }
+        System.out.println("Print best results after each round? [y/n]");
+        printBest = switch (Cmd.getUserOption(Arrays.asList("y", "n"))) {
+            case "y" -> true;
+            default -> false;
+        };
 
         Game g = new Game(enemyType, printBest);
         g.run();

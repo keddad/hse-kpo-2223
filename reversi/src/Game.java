@@ -14,10 +14,10 @@ import java.util.List;
 
 public class Game {
     private final IActor opponent;
-    // private final IActor player = new PlayerActor(PointColor.White);
     private final IActor player = new PlayerActor(PointColor.White);
     private int bestScore = 0;
-    private Boolean printBest = false;
+    private int bestEnemyScore = 0;
+    private final Boolean printBest;
 
     private static final PointColor playerColor = PointColor.White;
     private static final PointColor enemyColor = PointColor.Black;
@@ -26,11 +26,11 @@ public class Game {
         opponent = switch (enemyType) {
             case Player -> {
                 System.out.println("Playing in PVP mode");
-                yield new PlayerActor(PointColor.Black);
+                yield new PlayerActor(enemyColor);
             }
             case BasicMachine -> {
                 System.out.println("Playing in PVE mode, basic computer");
-                yield new BasicAiActor(PointColor.Black);
+                yield new BasicAiActor(enemyColor);
             }
             case AdvancedMachine -> {
                 System.out.println("Playing in PVP mode, advanced computer");
@@ -39,10 +39,6 @@ public class Game {
         };
 
         this.printBest = printBest;
-    }
-
-    private void printHello() {
-        System.out.println("You are playing as whites");
     }
 
     private void processGame(Field f) {
@@ -65,7 +61,7 @@ public class Game {
 
             f.printBoard(currentPlayer);
 
-            Boolean skipEnemy = false;
+            Boolean skipEnemy;
 
             if (currentPlayer == playerColor) {
                 skipEnemy = player.requestAction(f);
@@ -85,6 +81,7 @@ public class Game {
         Integer enemyPoints = f.countPoints(PointColor.Black);
 
         bestScore = Math.max(bestScore, playerPoints);
+        bestEnemyScore = Math.max(bestEnemyScore, enemyPoints);
 
         System.out.printf("Player score: %d\n", playerPoints);
         System.out.printf("Enemy score: %d\n", enemyPoints);
@@ -99,11 +96,11 @@ public class Game {
 
         if (printBest) {
             System.out.printf("Current player best: %d\n", bestScore);
+            System.out.printf("Current enemy best: %d\n", bestEnemyScore);
         }
     }
 
     public void run() {
-        printHello();
 
         while (true) {
             Field f = new Field();
