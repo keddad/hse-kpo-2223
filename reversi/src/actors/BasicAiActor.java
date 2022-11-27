@@ -7,10 +7,9 @@ import field.PointColor;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class BasicAiActor implements IActor {
-    private PointColor color;
+    private final PointColor color;
 
     public BasicAiActor(PointColor p) {
         color = p;
@@ -20,6 +19,10 @@ public class BasicAiActor implements IActor {
     public Boolean requestAction(Field f) {
         List<Coordinates> possibleTurns = FieldUtils.possibleMoves(color, f);
         List<ScoredCoordinate> scoredTurns = possibleTurns.stream().map(it -> new ScoredCoordinate(Utils.endPointValue(it) + field.FieldUtils.flippedPoint(it, color, f).stream().map(Utils::intermidiatePointValue).reduce(0.0, Double::sum), it)).sorted().toList();
+        return performMove(f, scoredTurns, color);
+    }
+
+    static Boolean performMove(Field f, List<ScoredCoordinate> scoredTurns, PointColor color) {
         Double maxScore = scoredTurns.get(scoredTurns.size() - 1).score();
 
         List<ScoredCoordinate> preferedMoves = scoredTurns.stream().filter(it -> it.score().equals(maxScore)).toList();

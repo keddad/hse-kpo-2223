@@ -8,7 +8,7 @@ import utils.Cmd;
 import java.util.Arrays;
 
 public class PlayerActor implements IActor {
-    private PointColor color;
+    private final PointColor color;
     public PlayerActor(PointColor p) {
         color = p;
     }

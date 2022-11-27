@@ -69,7 +69,7 @@ public class FieldUtils {
         assert (f.getPointColor(a) == PointColor.Empty && f.getPointColor(b) == p) || (f.getPointColor(b) == PointColor.Empty && f.getPointColor(a) == p);
 
         PointColor toFlip = p == PointColor.White ? PointColor.Black : PointColor.White;
-        List<Coordinates> answ = new ArrayList<>();
+        List<Coordinates> answer = new ArrayList<>();
 
         // i hate this
         if (a.x().equals(b.x())) {
@@ -77,7 +77,7 @@ public class FieldUtils {
                 Coordinates crds = new Coordinates(a.x(), y);
 
                 if (f.getPointColor(crds) == toFlip) {
-                    answ.add(crds);
+                    answer.add(crds);
                 }
             }
         } else if (a.y().equals(b.y())) {
@@ -85,7 +85,7 @@ public class FieldUtils {
                 Coordinates crds = new Coordinates(x, a.y());
 
                 if (f.getPointColor(crds) == toFlip) {
-                    answ.add(crds);
+                    answer.add(crds);
                 }
             }
         } else {
@@ -96,7 +96,7 @@ public class FieldUtils {
             }
 
             for (int diff = 1; diff < abs(a.y() - b.y()); diff++) {
-                Coordinates crds = null;
+                Coordinates crds;
 
                 if (a.y() < b.y()) {
                     crds = new Coordinates(a.x() + diff, a.y() + diff);
@@ -105,23 +105,22 @@ public class FieldUtils {
                 }
 
                 if (f.getPointColor(crds) == toFlip) {
-                    answ.add(crds);
+                    answer.add(crds);
                 }
             }
         }
 
-        return answ;
+        return answer;
     }
 
     public static List<Coordinates> flippedPoint(Coordinates crd, PointColor p, Field f) {
         // Points flipped when placing a point of certain color
-        List<Coordinates> flippedPoints = expandPoint(crd)
+
+        return expandPoint(crd)
                 .stream()
                 .filter(it -> f.getPointColor(it) == p)
                 .flatMap(it -> flippedPoints(crd, it, p, f).stream())
                 .toList();
-
-        return flippedPoints;
     }
 
     private static Boolean verifyFlipped(Coordinates a, Coordinates b, PointColor p, Field f) {
@@ -139,18 +138,16 @@ public class FieldUtils {
         PointColor enemyColor = p == PointColor.White ? PointColor.Black : PointColor.White;
 
         // functional programming was a mistake
-        List<Coordinates> possibleCoordinates = f.getColoredPoints(p)
+        return f.getColoredPoints(p)
                 .stream()
-                .collect(Collectors.toMap(it -> it, FieldUtils::expandPoint))
-                .entrySet()
+                .collect(Collectors.toMap(it -> it, FieldUtils::expandPoint)) // Get all possible endpoints for lines starting at points of target color
+                .entrySet() // Leave unique
                 .stream()
-                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> f.getPointColor(y) == PointColor.Empty).toList()))
-                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> isPointBordered(y, f, enemyColor)).toList()))
-                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> verifyFlipped(it.getKey(), y, p, f)).toList()))
+                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> f.getPointColor(y) == PointColor.Empty).toList())) // Remove already filled
+                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> isPointBordered(y, f, enemyColor)).toList())) // Remove without neighbour of enemy color
+                .map(it -> new Pair<>(it.getKey(), it.getValue().stream().filter(y -> verifyFlipped(it.getKey(), y, p, f)).toList())) // Remove ones which don't flip "the line"
                 .map(Pair::getValue)
                 .flatMap(Collection::stream).distinct().toList();
-
-        return possibleCoordinates;
     }
 
  }
