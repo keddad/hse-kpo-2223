@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class FileUtils {
+final public class FileUtils {
     /**
-     * @param path Path to the folder to recursivly scan for files
+     * @param path Path to the folder to recursively scan for files
      * @param prefix Prefix to add to the file path
      * @return Map of relative file paths to their contents
-     * @throws IOException
+     * @throws IOException If there are permissions issues or the path is invalid
      */
     public static Map<String, String> readAllFiles(String path, String prefix) throws IOException {
         File base = new File(path);
@@ -35,5 +38,17 @@ public class FileUtils {
         }
 
         return files;
+    }
+
+    final private static Pattern requirePattern = Pattern.compile("^require '(.*)'$", Pattern.MULTILINE);
+
+    /**
+     * @param fileContents Contents of the file
+     * @return List of files specified as "require ‘Folder 2/File 2-1’"
+     */
+    public static List<String> extractRequires(String fileContents) {
+        Matcher matcher = requirePattern.matcher(fileContents);
+
+        return matcher.results().map(m -> m.group(1)).toList();
     }
 }
