@@ -51,4 +51,19 @@ final public class FileUtils {
 
         return matcher.results().map(m -> m.group(1)).toList();
     }
+
+    /**
+     * @param files Map of relative file paths to their contents
+     * @return Map of relative file paths to the files they require
+     */
+    public static Map<String, List<String>> filesToDeps(Map<String, String> files) {
+        Map<String, List<String>> deps = new HashMap<>();
+
+        for (Map.Entry<String, String> entry : files.entrySet()) {
+            deps.put(entry.getKey(), extractRequires(entry.getValue()));
+        }
+
+        return deps;
+    }
+
 }
