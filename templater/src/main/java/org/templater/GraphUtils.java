@@ -1,12 +1,11 @@
 package org.templater;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 final public class GraphUtils {
     /**
      * Checks that dependency graph doesn't mention unknown files
+     *
      * @param deps A map of file names to a list of files that they require
      */
     public static Boolean allFilesExist(Map<String, List<String>> deps) {
@@ -40,6 +39,7 @@ final public class GraphUtils {
 
     /**
      * Checks that dependency graph doesn't contain cycles
+     *
      * @param graph A map of file names to a list of files that they require
      * @return true if graph contains cycles, false otherwise
      */
@@ -63,5 +63,50 @@ final public class GraphUtils {
         }
 
         return false;
+    }
+
+    private static List<String> allDeps(String key, Map<String, List<String>> graph) {
+        List<String> deps = new ArrayList<>();
+
+        for (String dep : graph.get(key)) {
+            if (!deps.contains(dep)) {
+                deps.add(dep);
+
+                allDeps(dep, graph).forEach(d -> {
+                    if (!deps.contains(d)) {
+                        deps.add(d);
+                    }
+                });
+            }
+        }
+
+        return deps;
+    }
+
+    /**
+     * @param graph A map of file names to a list of files that they require
+     * @return A list of files where each file is guaranteed to be before all files that it requires
+     */
+    public static List<String> sortGraph(Map<String, List<String>> graph) {
+        Map<String, List<String>> deepDeps = new HashMap<>() {{
+            for (String key : graph.keySet()) {
+                put(key, allDeps(key, graph));
+            }
+        }};
+
+        Comparator<String> sortByDeps = (key_l, key_r) -> {
+
+            if (deepDeps.get(key_l).contains(key_r) && !deepDeps.get(key_r).contains(key_l)) {
+                return 1;
+            }
+
+            if (deepDeps.get(key_r).contains(key_l) && !deepDeps.get(key_l).contains(key_r)) {
+                return -1;
+            }
+
+            return 0;
+        };
+
+        return new ArrayList<>(graph.keySet()).stream().sorted(sortByDeps).toList();
     }
 }

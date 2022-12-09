@@ -66,4 +66,12 @@ public class GraphUtilsTest {
         Map<String, List<String>> deps = new HashMap<>();
         assertFalse(GraphUtils.isCyclic(deps));
     }
+
+    @Test
+    public void testSorting() {
+        List<String> sorted = GraphUtils.sortGraph(basicDeps);
+        assertTrue(sorted.indexOf("Folder 2/File 2-1") < sorted.indexOf("Folder 1/File 1-1"));
+        assertTrue(sorted.indexOf("Folder 2/File 2-1") < sorted.indexOf("Folder 2/File 2-2"));
+        assertTrue(sorted.indexOf("Folder 1/File 1-1") < sorted.indexOf("Folder 2/File 2-2"));
+    }
 }
