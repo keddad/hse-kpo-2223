@@ -23,3 +23,7 @@
 hs_err_pid*
 
 reversi/.idea
+templater/.idea
+templater/build
+templater/.gradle
+templater/gradle
