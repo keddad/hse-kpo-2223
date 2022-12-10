@@ -10,8 +10,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final public class FileUtils {
+
+    private FileUtils() {
+    }
+
     /**
-     * @param path Path to the folder to recursively scan for files
+     * @param path   Path to the folder to recursively scan for files
      * @param prefix Prefix to add to the file path
      * @return Map of relative file paths to their contents
      * @throws IOException If there are permissions issues or the path is invalid

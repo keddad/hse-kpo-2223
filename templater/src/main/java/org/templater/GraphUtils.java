@@ -3,6 +3,9 @@ package org.templater;
 import java.util.*;
 
 final public class GraphUtils {
+    private GraphUtils() {
+    } // Because my teacher says so
+
     /**
      * Checks that dependency graph doesn't mention unknown files
      *
@@ -11,8 +14,8 @@ final public class GraphUtils {
     public static Boolean allFilesExist(Map<String, List<String>> deps) {
         boolean flag = true;
 
-        for(String file : deps.keySet()) {
-            for(String dep : deps.get(file)) {
+        for (String file : deps.keySet()) {
+            for (String dep : deps.get(file)) {
                 if (!deps.containsKey(dep)) {
                     flag = false;
 
