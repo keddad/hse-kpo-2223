@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 final public class Templater {
-    String basepath;
+    final String basepath;
 
     Templater(String p) {
         basepath = p;
@@ -16,11 +16,13 @@ final public class Templater {
         File base = new File(basepath);
 
         if (!base.exists()) {
-            throw new RuntimeException("Base path does not exist: " + basepath);
+            System.out.println("Path does not exist: " + basepath);
+            return;
         }
 
         if (!base.isDirectory()) {
-            throw new RuntimeException("Base path is not a directory: " + basepath);
+            System.out.println("Path is not a directory: " + basepath);
+            return;
         }
 
         Map<String, String> filesContetnts = FileUtils.readAllFiles(basepath, "");

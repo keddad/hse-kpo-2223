@@ -31,3 +31,15 @@ What path would it be?
 src/test/resources/BrokenRequire
 Dependency graph contains unknown files
 ```
+
+```
+What path would it be?
+abrakadabra
+Path does not exist: abrakadabra
+```
+
+```
+What path would it be?
+abrakadabra
+Path does not exist: abrakadabra
+```
