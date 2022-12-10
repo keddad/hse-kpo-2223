@@ -23,12 +23,15 @@ File 2-2 contents
 ```
 What path would it be?
 src/test/resources/BasicCycle
+Cycle detected: FileA -> FileB
+Cycle detected: FileB -> FileA
 Dependency graph contains cycles
 ```
 
 ```
 What path would it be?
 src/test/resources/BrokenRequire
+Unknown required file: sleep in A
 Dependency graph contains unknown files
 ```
 

@@ -9,9 +9,19 @@ final public class GraphUtils {
      * @param deps A map of file names to a list of files that they require
      */
     public static Boolean allFilesExist(Map<String, List<String>> deps) {
-        List<String> allValues = deps.values().stream().flatMap(List::stream).toList();
+        boolean flag = true;
 
-        return deps.keySet().containsAll(allValues);
+        for(String file : deps.keySet()) {
+            for(String dep : deps.get(file)) {
+                if (!deps.containsKey(dep)) {
+                    flag = false;
+
+                    System.out.println("Unknown required file: " + dep + " in " + file);
+                }
+            }
+        }
+
+        return flag;
     }
 
     private static Boolean graphDfs(String key, Map<String, Boolean> isVisited, Map<String, Boolean> isCurrentRecpath, Map<String, List<String>> graph) {
@@ -28,6 +38,7 @@ final public class GraphUtils {
 
         for (String child : graph.get(key)) {
             if (graphDfs(child, isVisited, isCurrentRecpath, graph)) {
+                System.out.println("Cycle detected: " + key + " -> " + child);
                 return true;
             }
         }
