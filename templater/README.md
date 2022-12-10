@@ -37,9 +37,3 @@ What path would it be?
 abrakadabra
 Path does not exist: abrakadabra
 ```
-
-```
-What path would it be?
-abrakadabra
-Path does not exist: abrakadabra
-```
