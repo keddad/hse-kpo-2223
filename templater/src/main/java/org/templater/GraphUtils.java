@@ -108,19 +108,21 @@ final public class GraphUtils {
             }
         }};
 
-        Comparator<String> sortByDeps = (key_l, key_r) -> {
+        ArrayList<String> sortBoogalo = new ArrayList<>(graph.keySet());
 
-            if (deepDeps.get(key_l).contains(key_r) && !deepDeps.get(key_r).contains(key_l)) {
-                return 1;
+        // This is horrible, but it works
+        for (int i = 0; i < sortBoogalo.size(); i++) {
+            for (int j = 0; j < sortBoogalo.size(); j++) {
+                for (int k = 0; k < sortBoogalo.size(); k++) {
+                    if (deepDeps.get(sortBoogalo.get(k)).contains(sortBoogalo.get(j))) {
+                        String tmp = sortBoogalo.get(j);
+                        sortBoogalo.set(j, sortBoogalo.get(k));
+                        sortBoogalo.set(k, tmp);
+                    }
+                }
             }
+        }
 
-            if (deepDeps.get(key_r).contains(key_l) && !deepDeps.get(key_l).contains(key_r)) {
-                return -1;
-            }
-
-            return 0;
-        };
-
-        return new ArrayList<>(graph.keySet()).stream().sorted(sortByDeps).toList();
+        return sortBoogalo;
     }
 }
