@@ -1,0 +1,22 @@
+{
+  "menu_dishes": [
+    {
+      "menu_dish_id": 1,
+      "menu_dish_card": 11,
+      "menu_dish_price": 42,
+      "menu_dish_active": true
+    },
+    {
+      "menu_dish_id": 2,
+      "menu_dish_card": 12,
+      "menu_dish_price": 69,
+      "menu_dish_active": true
+    },
+    {
+      "menu_dish_id": 3,
+      "menu_dish_card": 13,
+      "menu_dish_price": 1500,
+      "menu_dish_active": false
+    }
+  ]
+}

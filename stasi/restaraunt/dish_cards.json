@@ -1,0 +1,52 @@
+{
+  "dish_cards": [{
+    "card_id": 11,
+    "dish_name": "Princess Nuri tea bag in a paper cup",
+    "card_descr": "pouring boiled water into a paper cup + 2 bags of sugar",
+    "card_time": 0.15,
+    "equip_type": 1,
+    "operations": [{
+      "oper_type": 17,
+      "oper_async_point": 0,
+      "oper_products": [{
+        "prod_type": 1,
+        "prod_quantity": 1
+      },
+        {
+          "prod_type": 2,
+          "prod_quantity": 2
+
+        },
+        {
+          "prod_type_id": 3,
+          "prod_quantity": 0.2
+        }
+      ]
+    }]
+  },
+    {
+      "card_id": 12,
+      "dish_name": "Cat shawerma",
+      "card_descr": "Shawerma with magic meat",
+      "card_time": 1,
+      "equip_type": 1,
+      "operations": [{
+        "oper_type": 17,
+        "oper_async_point": 0,
+        "oper_products": [{
+          "prod_type": 1,
+          "prod_quantity": 1
+        },
+          {
+            "prod_type": 2,
+            "prod_quantity": 2
+
+          },
+          {
+            "prod_type_id": 3,
+            "prod_quantity": 0.2
+          }
+        ]
+      }]
+    }]
+}
