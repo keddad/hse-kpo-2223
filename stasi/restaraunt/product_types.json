@@ -1,0 +1,44 @@
+{
+  "product_types": [
+    {
+      "prod_type_id": 1,
+      "prod_type_name": "Paper cup",
+      "prod_is_food": false
+    },
+    {
+      "prod_type_id": 2,
+      "prod_type_name": "Water",
+      "prod_is_food": true
+    },
+    {
+      "prod_type_id": 3,
+      "prod_type_name": "Sugar",
+      "prod_is_food": true
+    },
+    {
+      "prod_type_id": 4,
+      "prod_type_name": "Bread",
+      "prod_is_food": true
+    },
+    {
+      "prod_type_id": 5,
+      "prod_type_name": "Tomatoes",
+      "prod_is_food": true
+    },
+    {
+      "prod_type_id": 6,
+      "prod_type_name": "Mystery meat",
+      "prod_is_food": true
+    },
+    {
+      "prod_type_id": 7,
+      "prod_type_name": "Java lecturer",
+      "prod_is_food": true
+    },
+    {
+      "prod_type_id": 8,
+      "prod_type_name": "Cucmber",
+      "prod_is_food": true
+    }
+  ]
+}

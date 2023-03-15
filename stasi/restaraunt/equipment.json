@@ -1,0 +1,24 @@
+{
+  "equipment": [
+    {
+      "equip_type": 1,
+      "equip_name": "Steel table",
+      "equip_active": true
+    },
+    {
+      "equip_type": 1,
+      "equip_name": "Wooden table",
+      "equip_active": true
+    },
+    {
+      "equip_type": 2,
+      "equip_name": "Oven A",
+      "equip_active": true
+    },
+    {
+      "equip_type": 2,
+      "equip_name": "Oven B",
+      "equip_active": false
+    }
+  ]
+}

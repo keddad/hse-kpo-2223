@@ -1,0 +1,92 @@
+{
+  "products": [
+    {
+      "prod_item_id": 172,
+      "prod_item_type ": 1,
+      "prod_item_name": "Paper cup",
+      "prod_item_company": "Cup Factory INC",
+      "prod_item_unit": "pc.",
+      "prod_item_quantity": 874,
+      "prod_item_cost": 1.5,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    },
+    {
+      "prod_item_id": 196,
+      "prod_item_type ": 2,
+      "prod_item_name": "Water",
+      "prod_item_company": "Vodokanal",
+      "prod_item_unit": "l.",
+      "prod_item_quantity": 20000000,
+      "prod_item_cost": 0,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    },
+    {
+      "prod_item_id": 1234,
+      "prod_item_type ": 3,
+      "prod_item_name": "Sugar",
+      "prod_item_company": "Ghidra",
+      "prod_item_unit": "kg.",
+      "prod_item_quantity": 100,
+      "prod_item_cost": 1,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    },
+    {
+      "prod_item_id": 12314,
+      "prod_item_type ": 4,
+      "prod_item_name": "Bread",
+      "prod_item_company": "Mike's Bread",
+      "prod_item_unit": "pc.",
+      "prod_item_quantity": 100,
+      "prod_item_cost": 0.4,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    },
+    {
+      "prod_item_id": 42,
+      "prod_item_type ": 5,
+      "prod_item_name": "Tomatoes",
+      "prod_item_company": "Grandmother",
+      "prod_item_unit": "pc.",
+      "prod_item_quantity": 15,
+      "prod_item_cost": 5,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    },
+    {
+      "prod_item_id": 1,
+      "prod_item_type ": 6,
+      "prod_item_name": "Mystery meat",
+      "prod_item_company": "Alley",
+      "prod_item_unit": "pc.",
+      "prod_item_quantity": 2,
+      "prod_item_cost": 5,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    },
+    {
+      "prod_item_id": 41231,
+      "prod_item_type ": 7,
+      "prod_item_name": "Java Lecturer",
+      "prod_item_company": "MSU",
+      "prod_item_unit": "pc.",
+      "prod_item_quantity": 1,
+      "prod_item_cost": 0,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    },
+    {
+      "prod_item_id": 112412,
+      "prod_item_type ": 8,
+      "prod_item_name": "Cucumber",
+      "prod_item_company": "Grandfather",
+      "prod_item_unit": "pc.",
+      "prod_item_quantity": 10,
+      "prod_item_cost": 4,
+      "prod_item_delivered": "2023-01-15T08:10:36",
+      "prod_item_valid_until": "2024-12-31T23:59:59"
+    }
+  ]
+}
