@@ -12,7 +12,7 @@ public class Controller {
     private final ContainerController containerController;
 
     // Agents which manage resources and spawn on startup
-    private static final List<String> singletonAgents = List.of("edu.keddad.stasi.Manager.Manager", "edu.keddad.stasi.Agent.Agent");
+    private static final List<String> singletonAgents = List.of("edu.keddad.stasi.Manager.Manager", "edu.keddad.stasi.Client.Client");
     public Controller() {
         final Runtime rt = Runtime.instance();
         final Profile p = new ProfileImpl();

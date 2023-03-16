@@ -1,23 +1,54 @@
 package edu.keddad.stasi.Manager;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Manager extends Agent{
     @Override
     protected void setup() {
-        System.out.println("Starting Manager agent");
-        System.out.println("Hello world! I'm an agent!");
-        System.out.println("My local name is " + getAID().getLocalName());
-        System.out.println("My GUID is " + getAID().getName());
-        System.out.println("My addresses are " + String.join(",", getAID().getAddressesArray()));
+        registerManager();
+        addBehaviour(new CyclicBehaviour() {
+            @Override
+            public void action() {
+                ACLMessage msg = receive();
 
+                if (msg != null) {
+                    String contents = msg.getContent();
+
+                    if (contents.startsWith(OrderRequest.mnemonic)) {
+                        try {
+                            OrderRequest rd = new ObjectMapper().readValue(
+                                    contents.substring(contents.indexOf(' ')),
+                                    OrderRequest.class
+                            );
+
+                            handleOrderRequest(rd, msg);
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                } else {
+                    block();
+                }
+            }
+        });
+    }
+    @Override
+    protected void takeDown() {
+        System.out.println("Agent " + getAID().getName() + " terminating");
+    }
+
+    private void registerManager() {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
@@ -30,35 +61,21 @@ public class Manager extends Agent{
         catch (FIPAException fe) {
             fe.printStackTrace();
         }
-
-        addBehaviour(new TickerBehaviour(this, 1000) {
-            private int counter = 0;
-            @Override
-            protected void onTick() {
-                System.out.println("Manager Agent Ticking Behaviour " + counter);
-                counter += 1;
-            }
-        });
-        addBehaviour(new CyclicBehaviour() {
-            @Override
-            public void action() {
-                ACLMessage msg = receive();
-
-                if (msg != null) {
-                    String content = msg.getContent();
-
-                    ACLMessage reply = msg.createReply();
-                    reply.setContent(content);
-                    send(reply);
-                } else {
-                    block();
-                }
-            }
-        });
     }
-    @Override
-    protected void takeDown() {
-        System.out.println("Agent " + getAID().getName() + " terminating");
+
+    private void handleOrderRequest(OrderRequest rd, ACLMessage msg) {
+        System.out.printf("Got order request with %d items!\n", rd.items.length);
+
+        ACLMessage reply = msg.createReply();
+
+        if (ThreadLocalRandom.current().nextInt(0, 2) == 1) {
+            reply.setPerformative(ACLMessage.CONFIRM);
+        } else {
+            reply.setPerformative(ACLMessage.FAILURE);
+        }
+
+        send(reply);
+        System.out.println("Sending order response message!");
     }
 
 }
