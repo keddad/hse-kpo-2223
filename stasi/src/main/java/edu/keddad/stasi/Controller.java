@@ -64,8 +64,8 @@ public final class Controller {
 
         for (File clientConfig : dir.listFiles()) {
             AgentController ac = containerController.createNewAgent(
-                    clientAgent,
                     "agent_" + clientConfig.getName(),
+                    clientAgent,
                     new String[]{logPath, clientConfig.toString()}
             );
 
