@@ -3,13 +3,12 @@ package edu.keddad.stasi.Client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.keddad.stasi.Manager.OrderRequest;
+import edu.keddad.stasi.Messaging.OrderEntry;
+import edu.keddad.stasi.Messaging.RecipientFinder;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
-import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
@@ -20,15 +19,15 @@ public class Client extends Agent {
     protected void setup() {
         // This method should recive json in args (?)
 
-        getManager();
+        DFAgentDescription manager = RecipientFinder.findRecipient(this, "manager");
 
-        addBehaviour(new TickerBehaviour(this, 1000) {
+        addBehaviour(new TickerBehaviour(this, 15000) {
             @Override
             protected void onTick() {
-                OrderRequest rq = new OrderRequest(new OrderRequest.OrderEntity[]{
-                        new OrderRequest.OrderEntity(1, 2),
-                        new OrderRequest.OrderEntity(2, 2),
-                        new OrderRequest.OrderEntity(3, 4),
+                OrderRequest rq = new OrderRequest(new OrderEntry[]{
+                        new OrderEntry(1, 2),
+                        new OrderEntry(2, 2),
+                        new OrderEntry(3, 4),
                 });
 
                 try {
@@ -76,28 +75,6 @@ public class Client extends Agent {
     @Override
     protected void takeDown() {
         System.out.println("Agent " + getAID().getName() + " terminating");
-    }
-
-    private DFAgentDescription manager;
-
-    private void getManager() {
-        DFAgentDescription template = new DFAgentDescription();
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType("manager");
-        template.addServices(sd);
-
-        DFAgentDescription[] result = new DFAgentDescription[]{};
-
-        while (result.length == 0) {
-            try {
-                result = DFService.search(this, template);
-            }
-            catch (FIPAException fe) {
-                fe.printStackTrace();
-            }
-        }
-
-        manager = result[0];
     }
 
 }
