@@ -6,14 +6,29 @@ import jade.core.Runtime;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 
-import java.util.List;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Stream;
 
-public class Controller {
+public final class Controller {
     private final ContainerController containerController;
 
     // Agents which manage resources and spawn on startup
-    private static final List<String> singletonAgents = List.of("edu.keddad.stasi.Manager.Manager", "edu.keddad.stasi.Client.Client");
-    public Controller() {
+    private final static Map<String, String[]> singletonAgents = Map.of(
+            "edu.keddad.stasi.Manager.Manager", new String[]{"menu_dishes.json"},
+            "edu.keddad.stasi.EqipmentAgent.EqipmentAgent", new String[]{"eqipment.json", "eqipment_type.json"},
+            "edu.keddad.stasi.HumanAgent.HumanAgent", new String[]{"cookers.json"},
+            "edu.keddad.stasi.InstructionStorage.InstructionStorage", new String[]{"dish_cards.json", "product_types.json"},
+            "edu.keddad.stasi.Storage.Storage", new String[]{"products.json", "product_types.json"},
+            "edu.keddad.stasi.ResourceReserver.ResourceReserver", new String[]{"operation_types.json"}
+    );
+    private final static String clientAgent = "edu.keddad.stasi.Client.Client";
+    private final static String clientConfigFolder = "clients";
+    private String configPath;
+    private String logPath = "log";
+
+    public Controller(String configPath) {
         final Runtime rt = Runtime.instance();
         final Profile p = new ProfileImpl();
 
@@ -22,19 +37,38 @@ public class Controller {
         p.setParameter(Profile.GUI, "true");
 
         containerController = rt.createMainContainer(p);
+
+        if (!configPath.endsWith("/")) { // unix rulez
+            configPath = configPath + "/";
+        }
+
+        this.configPath = configPath;
     }
 
     public void initAgents() throws jade.wrapper.StaleProxyException {
 
-        for (String agent : singletonAgents) {
+        for (String agent : singletonAgents.keySet()) {
             String[] splitted = agent.split("\\.");
             String agentName = splitted[splitted.length - 1].toLowerCase();
 
             AgentController ac = containerController.createNewAgent(
                     agentName,
                     agent,
-                    null
+                    Stream.concat(Stream.of(logPath), Arrays.stream(singletonAgents.get(agent)).map((f) -> configPath + f)).toArray()
             );
+
+            ac.start();
+        }
+
+        File dir = new File(configPath + clientConfigFolder);
+
+        for (File clientConfig : dir.listFiles()) {
+            AgentController ac = containerController.createNewAgent(
+                    clientAgent,
+                    "agent_" + clientConfig.getName(),
+                    new String[]{logPath, clientConfig.toString()}
+            );
+
             ac.start();
         }
     }
