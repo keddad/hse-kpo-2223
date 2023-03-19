@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.OrderEntry;
-import edu.keddad.stasi.Messaging.RecipientFinder;
+import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
@@ -19,7 +19,7 @@ public class Client extends Agent {
     protected void setup() {
         // This method should recive json in args (?)
 
-        DFAgentDescription manager = RecipientFinder.findRecipient(this, "manager");
+        DFAgentDescription manager = YellowBooks.findRecipient(this, "manager");
 
         addBehaviour(new TickerBehaviour(this, 15000) {
             @Override

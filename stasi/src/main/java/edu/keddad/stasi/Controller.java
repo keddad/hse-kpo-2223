@@ -62,6 +62,7 @@ public final class Controller {
 
         File dir = new File(configPath + clientConfigFolder);
 
+        //noinspection DataFlowIssue
         for (File clientConfig : dir.listFiles()) {
             AgentController ac = containerController.createNewAgent(
                     "agent_" + clientConfig.getName(),
