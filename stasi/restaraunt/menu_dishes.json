@@ -1,28 +1,24 @@
 {
-  "menu_dishes": [
+  "dishes": [
     {
-      "menu_dish_id": 1,
-      "menu_dish_card": 11,
-      "menu_dish_price": 42,
-      "menu_dish_active": true
+      "id": 1,
+      "price": 42,
+      "is_active": true
     },
     {
-      "menu_dish_id": 2,
-      "menu_dish_card": 12,
-      "menu_dish_price": 69,
-      "menu_dish_active": true
+      "id": 2,
+      "price": 69,
+      "is_active": true
     },
     {
-      "menu_dish_id": 3,
-      "menu_dish_card": 13,
-      "menu_dish_price": 1500,
-      "menu_dish_active": false
+      "id": 3,
+      "price": 1500,
+      "is_active": false
     },
     {
-      "menu_dish_id": 4,
-      "menu_dish_card": 14,
-      "menu_dish_price": 1800,
-      "menu_dish_active": true
+      "id": 4,
+      "price": 1800,
+      "is_active": true
     }
   ]
 }

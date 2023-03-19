@@ -1,16 +1,16 @@
 {
   "operation_types": [
     {
-      "oper_type_id": 111,
-      "oper_type_name": "Pouring water"
+      "id": 111,
+      "name": "Pouring water"
     },
     {
-      "oper_type_id": 112,
-      "oper_type_name": "Hot oven"
+      "id": 112,
+      "name": "Hot oven"
     },
     {
-      "oper_type_id": 114,
-      "oper_type_name": "Medium oven"
+      "id": 114,
+      "name": "Medium oven"
     }
   ]
 }

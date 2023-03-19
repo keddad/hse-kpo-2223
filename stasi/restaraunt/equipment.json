@@ -1,24 +1,28 @@
 {
   "equipment": [
     {
-      "equip_type": 1,
-      "equip_name": "Steel table",
-      "equip_active": true
+      "type": 1,
+      "id": 1,
+      "name": "Steel table",
+      "is_active": true
     },
     {
-      "equip_type": 1,
-      "equip_name": "Wooden table",
-      "equip_active": true
+      "type": 1,
+      "id": 2,
+      "name": "Wooden table",
+      "is_active": true
     },
     {
-      "equip_type": 2,
-      "equip_name": "Oven A",
-      "equip_active": true
+      "type": 2,
+      "id": 3,
+      "name": "Oven A",
+      "is_active": true
     },
     {
-      "equip_type": 2,
-      "equip_name": "Oven B",
-      "equip_active": false
+      "type": 2,
+      "id": 4,
+      "name": "Oven B",
+      "is_active": false
     }
   ]
 }

@@ -1,88 +1,118 @@
 {
   "dish_cards": [
     {
-      "card_id": 11,
+      "id": 1,
       "dish_name": "Sugary water",
       "card_descr": "pouring boiled water into a paper cup + 2 bags of sugar",
       "card_time": 0.15,
-      "equip_type": 1,
+      "equipment_required": 1,
       "operations": [
         {
-          "oper_type": 111,
-          "oper_async_point": 0,
-          "oper_products": [
+          "type": 111,
+          "async_point": 0,
+          "products": [
             {
-              "prod_type_id": 1,
-              "prod_quantity": 1
+              "id": 1,
+              "quantity": 1
             },
             {
-              "prod_type_id": 2,
-              "prod_quantity": 2
+              "id": 2,
+              "quantity": 2
             },
             {
-              "prod_type_id": 3,
-              "prod_quantity": 0.2
+              "id": 3,
+              "quantity": 0.2
             }
           ]
         }
       ]
     },
     {
-      "card_id": 12,
+      "id": 2,
       "dish_name": "Cat shawerma",
       "card_descr": "Shawerma with magic meat",
       "card_time": 5,
-      "equip_type": 1,
+      "equipment_required": 1,
       "operations": [
         {
-          "oper_type": 112,
-          "oper_async_point": 0,
-          "oper_products": [
+          "type": 112,
+          "async_point": 0,
+          "products": [
             {
-              "prod_type_id": 4,
-              "prod_quantity": 1
+              "id": 4,
+              "quantity": 1
             },
             {
-              "prod_type_id": 5,
-              "prod_quantity": 2
+              "id": 5,
+              "quantity": 2
             },
             {
-              "prod_type_id": 6,
-              "prod_quantity": 1
+              "id": 6,
+              "quantity": 1
             }
           ]
         }
       ]
     },
     {
-      "card_id": 13,
+      "id": 3,
       "dish_name": "Golden goose",
       "card_descr": "",
       "card_time": 1,
-      "equip_type": 1,
+      "equipment_required": 1,
       "operations": []
     },
     {
-      "card_id": 14,
+      "id": 4,
       "dish_name": "Java lecturer, baked in an oven",
       "card_descr": "",
       "card_time": 10,
-      "equip_type": 2,
+      "equipment_required": 2,
       "operations": [
         {
-          "oper_type": 114,
-          "oper_async_point": 0,
-          "oper_products": [
+          "type": 114,
+          "async_point": 1,
+          "products": [
             {
-              "prod_type_id": 7,
-              "prod_quantity": 1
+              "id": 7,
+              "quantity": 1
             },
             {
-              "prod_type_id": 8,
-              "prod_quantity": 2
+              "id": 8,
+              "quantity": 2
             }
           ]
-        }
+        },
+        {
+          "type": 114,
+          "async_point": 1,
+          "products": [
+            {
+              "id": 7,
+              "quantity": 1
+            },
+            {
+              "id": 8,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "type": 111,
+          "async_point": 2,
+          "products": [
+            {
+              "id": 1,
+              "quantity": 1
+            },
+            {
+              "id": 2,
+              "quantity": 2
+            },
+            {
+              "id": 3,
+              "quantity": 0.2
+            }
       ]
     }
   ]
