@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EqipmentRequest {
     static String mnemonic = "reserve";
+
     @NoArgsConstructor
     @AllArgsConstructor
     public class EqipmentEntry {
-        public int OrderDishId; // Unique in order?
+        public int OrderDishType; // Unique in order?
+        public int CookTime;
     }
 
     public EqipmentEntry[] items;

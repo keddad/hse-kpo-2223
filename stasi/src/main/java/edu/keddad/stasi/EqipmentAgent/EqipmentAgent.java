@@ -2,7 +2,6 @@ package edu.keddad.stasi.EqipmentAgent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -10,12 +9,10 @@ import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 
 public class EqipmentAgent extends Agent {
     private MenuEqipment eqipment;
-    private Map<Integer, MenuEqipment.MenuEquipments> eqt;
 
     @Override
     protected void setup() {
@@ -27,10 +24,6 @@ public class EqipmentAgent extends Agent {
             throw new RuntimeException(e);
         }
 
-        eqt = new HashMap<Integer, MenuEqipment.MenuEquipments>();
-        for (MenuEqipment.MenuEquipments struct : eqipment.equipment) {
-            eqt.put(struct.id, struct);
-        }
         addBehaviour(new CyclicBehaviour() {
             @Override
             public void action() {
@@ -64,16 +57,27 @@ public class EqipmentAgent extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private void toReserve(EqipmentRequest rd) {
-        for (EqipmentRequest.EqipmentEntry id : rd.items) {
-            MenuEqipment.MenuEquipments struct = eqt.get(id.OrderDishId);
-            if (!struct.reserve) {
-                struct.reserve = true;
-            } else {
-                // оборудование занято
+    private int toReserve(EqipmentRequest rd) {
+        for (EqipmentRequest.EqipmentEntry request : rd.items) {
+            int minimum = Integer.MAX_VALUE;
+            MenuEqipment.MenuEquipments BetterEquipment;
+            for (MenuEqipment.MenuEquipments struct : eqipment.equipment) {
+
+                if (request.OrderDishType == struct.type) {
+                    if (struct.ReserveTime == 0) {
+                        struct.ReserveTime = request.CookTime + System.currentTimeMillis();
+                        return (request.CookTime);
+                    }
+
+                } else {
+                    // оборудование занято
 
 
+                }
             }
+
         }
+        return 0;
     }
+
 }
