@@ -44,6 +44,7 @@ public class Manager extends Agent{
                         }
                     }
 
+
                 } else {
                     block();
                 }
