@@ -9,7 +9,6 @@ import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Map;
 
 public class EqipmentAgent extends Agent {
     private MenuEqipment eqipment;
@@ -31,14 +30,21 @@ public class EqipmentAgent extends Agent {
                 ACLMessage msg = receive();
                 if (msg != null) {
                     String contents = msg.getContent();
-                    if (contents.startsWith(EqipmentRequest.mnemonic)) {
+                    if (contents.startsWith("check_for_availability")) {
                         try {
                             EqipmentRequest rd = new ObjectMapper().readValue(
                                     contents,
                                     EqipmentRequest.class
 
                             );
-                            toReserve(rd);
+                            ACLMessage reply = msg.createReply();
+                            if (checkReserve(rd)) {
+                                reply.setPerformative(ACLMessage.CONFIRM);
+                            } else {
+                                reply.setPerformative(ACLMessage.FAILURE);
+                            }
+                            send(reply);
+
                         } catch (JsonProcessingException e) {
                             throw new RuntimeException(e);
                         }
@@ -57,27 +63,18 @@ public class EqipmentAgent extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private int toReserve(EqipmentRequest rd) {
-        for (EqipmentRequest.EqipmentEntry request : rd.items) {
-            int minimum = Integer.MAX_VALUE;
-            MenuEqipment.MenuEquipments BetterEquipment;
-            for (MenuEqipment.MenuEquipments struct : eqipment.equipment) {
+    private boolean checkReserve(EqipmentRequest rd) {
 
-                if (request.OrderDishType == struct.type) {
-                    if (struct.ReserveTime == 0) {
-                        struct.ReserveTime = request.CookTime + System.currentTimeMillis();
-                        return (request.CookTime);
-                    }
+        for (MenuEqipment.MenuEquipments struct : eqipment.equipment) {
 
-                } else {
-                    // оборудование занято
-
+            if (rd.items[0].OrderDishType == struct.type) {
+                if (struct.ReserveTime < System.currentTimeMillis()) {
 
                 }
             }
-
         }
-        return 0;
+
+        return false;
     }
 
 }
