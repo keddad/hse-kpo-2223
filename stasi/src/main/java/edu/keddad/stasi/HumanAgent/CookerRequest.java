@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 public class CookerRequest {
 
     public class CookEntry {
-        public int OrderDishType;
         public long CookTime;
     }
 

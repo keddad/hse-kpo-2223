@@ -15,7 +15,7 @@ public class HumanAgent extends Agent {
 
     @Override
     protected void setup() {
-        YellowBooks.registerRecipient(this, "eqipment");
+        YellowBooks.registerRecipient(this, "humans");
 
         try {
             team = new ObjectMapper().readValue(Paths.get((String) getArguments()[1]).toFile(), TeamCookers.class);
@@ -37,11 +37,8 @@ public class HumanAgent extends Agent {
 
                             );
                             ACLMessage reply = msg.createReply();
-                            if (checkReserve(rd)) {
-                                reply.setContent("true");
-                            } else {
-                                reply.setContent("");
-                            }
+                            String str = Long.toString(checkReserve(rd));
+                            reply.setContent(str);
                             send(reply);
 
                         } catch (JsonProcessingException e) {
@@ -63,18 +60,23 @@ public class HumanAgent extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private boolean checkReserve(CookerRequest rd) {
-
-        for (TeamCookers.Cooker struct : TeamCookers.humans) {
-            if (struct.ReserveTime < System.currentTimeMillis() && struct.active) {
-                struct.ReserveTime = System.currentTimeMillis() + rd.cookers[0].CookTime;
-                return true;
-            } else {
-                return false;
+    private long checkReserve(CookerRequest rd) {
+        long workTime = 0;
+        for (CookerRequest.CookEntry request : rd.cookers) {
+            long minTime = Long.MAX_VALUE;
+            TeamCookers.Cooker betterCooker = null;
+            for (TeamCookers.Cooker cooker : TeamCookers.humans) {
+                if (cooker.ReserveTime < minTime && cooker.active) {
+                    minTime = cooker.ReserveTime;
+                    betterCooker = cooker;
+                }
             }
-
+            assert betterCooker != null;
+            betterCooker.ReserveTime = System.currentTimeMillis() + request.CookTime;
+            if (workTime < betterCooker.ReserveTime) {
+                workTime = betterCooker.ReserveTime;
+            }
         }
-
-        return false;
+        return workTime;
     }
 }
