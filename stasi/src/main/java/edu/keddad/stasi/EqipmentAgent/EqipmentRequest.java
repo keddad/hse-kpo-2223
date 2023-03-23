@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EqipmentRequest {
-    static String mnemonic = "reserve";
 
     @NoArgsConstructor
     @AllArgsConstructor

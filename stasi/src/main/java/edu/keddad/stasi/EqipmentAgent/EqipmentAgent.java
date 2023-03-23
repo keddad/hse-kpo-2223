@@ -39,9 +39,9 @@ public class EqipmentAgent extends Agent {
                             );
                             ACLMessage reply = msg.createReply();
                             if (checkReserve(rd)) {
-                                reply.setPerformative(ACLMessage.CONFIRM);
+                                reply.setContent("true");
                             } else {
-                                reply.setPerformative(ACLMessage.FAILURE);
+                                reply.setContent("");
                             }
                             send(reply);
 
@@ -67,7 +67,7 @@ public class EqipmentAgent extends Agent {
 
         for (MenuEqipment.MenuEquipments struct : eqipment.equipment) {
 
-            if (rd.items[0].OrderDishType == struct.type) {
+            if (rd.items[0].OrderDishType == struct.type && struct.active) {
                 if (struct.ReserveTime < System.currentTimeMillis()) {
                     struct.ReserveTime = System.currentTimeMillis() + rd.items[0].CookTime;
                     return true;
