@@ -30,7 +30,7 @@ public class EqipmentAgent extends Agent {
                 ACLMessage msg = receive();
                 if (msg != null) {
                     String contents = msg.getContent();
-                    if (contents.startsWith("check_for_availability")) {
+                    if (contents.startsWith("reserve")) {
                         try {
                             EqipmentRequest rd = new ObjectMapper().readValue(
                                     contents,
@@ -69,7 +69,10 @@ public class EqipmentAgent extends Agent {
 
             if (rd.items[0].OrderDishType == struct.type) {
                 if (struct.ReserveTime < System.currentTimeMillis()) {
-
+                    struct.ReserveTime = System.currentTimeMillis() + rd.items[0].CookTime;
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
