@@ -1,6 +1,5 @@
 package edu.keddad.stasi.HumanAgent;
 
-import edu.keddad.stasi.EqipmentAgent.EqipmentRequest;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
