@@ -2,6 +2,7 @@ package edu.keddad.stasi.HumanAgent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -32,7 +33,7 @@ public class HumanAgent extends Agent {
                     if (contents.startsWith("reserve")) {
                         try {
                             CookerRequest rd = new ObjectMapper().readValue(
-                                    contents,
+                                    contents.substring(contents.indexOf(' ')),
                                     CookerRequest.class
 
                             );

@@ -9,11 +9,12 @@ public class EqipmentRequest {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public class EqipmentEntry {
+
+    public static class   EqipmentEntry {
         public int OrderDishType; // Unique in order?
         public int CookTime;
     }
 
-    public EqipmentEntry[] items;
+    public EqipmentEntry[] equipment;
 
 }

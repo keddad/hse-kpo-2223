@@ -2,6 +2,7 @@ package edu.keddad.stasi.EqipmentAgent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -32,11 +33,7 @@ public class EqipmentAgent extends Agent {
                     String contents = msg.getContent();
                     if (contents.startsWith("reserve")) {
                         try {
-                            EqipmentRequest rd = new ObjectMapper().readValue(
-                                    contents,
-                                    EqipmentRequest.class
-
-                            );
+                            EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
                             ACLMessage reply = msg.createReply();
                             if (checkReserve(rd)) {
                                 reply.setContent("true");
@@ -65,14 +62,15 @@ public class EqipmentAgent extends Agent {
 
     private boolean checkReserve(EqipmentRequest rd) {
 
-        for (MenuEqipment.MenuEquipments struct : eqipment.equipment) {
-
-            if (rd.items[0].OrderDishType == struct.type && struct.active) {
-                if (struct.ReserveTime < System.currentTimeMillis()) {
-                    struct.ReserveTime = System.currentTimeMillis() + rd.items[0].CookTime;
-                    return true;
-                } else {
-                    return false;
+        for (EqipmentRequest.EqipmentEntry req : rd.equipment) {
+            for (MenuEqipment.MenuEquipments eq : eqipment.equipment) {
+                if (req.OrderDishType == eq.type && eq.active) {
+                    if (eq.ReserveTime < System.currentTimeMillis()) {
+                        eq.ReserveTime = System.currentTimeMillis() + req.CookTime;
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
         }
