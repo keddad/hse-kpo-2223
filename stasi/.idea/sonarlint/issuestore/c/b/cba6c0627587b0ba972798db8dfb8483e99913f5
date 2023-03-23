@@ -1,0 +1,8 @@
+
+o
+java:S1104"TMake mnemonic a static final constant or non-public and provide accessors if needed.(‘‰óìıÿÿÿÿ
+I
+java:S1444".Make this "public static mnemonic" field final(‘‰óìıÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«äËúÿÿÿÿ
+U
+java:S1118":Add a private constructor to hide the implicit public one.(Ì£é§ûÿÿÿÿ

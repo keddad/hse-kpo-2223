@@ -1,0 +1,13 @@
+
+f
+java:S1104"PMake type a static final constant or non-public and provide accessors if needed.(ûöå©
+i
+java:S1104"NMake id a static final constant or non-public and provide accessors if needed.(ÍéÌ‘øÿÿÿÿ
+f
+java:S1104"PMake name a static final constant or non-public and provide accessors if needed.( şÍ¾
+y
+java:S1104"WMake ReserveTime a static final constant or non-public and provide accessors if needed.(Ã¢€èüÿÿÿÿ8¿ÅÎ§ğ0
+p
+java:S1104"UMake equipment a static final constant or non-public and provide accessors if needed.(‰Õó˜øÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¬í¹
+w	java:S116"VRename this field "ReserveTime" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ã¢€èüÿÿÿÿ8ÇÅÎ§ğ0

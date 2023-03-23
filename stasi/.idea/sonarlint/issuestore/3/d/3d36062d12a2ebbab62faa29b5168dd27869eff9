@@ -1,0 +1,15 @@
+
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¿žÜøýÿÿÿÿ
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¡Ï–šûÿÿÿÿ
+[
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(ùöÄ¯
+`
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(¿žÜøýÿÿÿÿ
+`
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(¡Ï–šûÿÿÿÿ
+<
+java:S1075*"&Remove this hard-coded path-delimiter.(½ýŠà
+O
+java:S28642"4Iterate over the "entrySet" instead of the "keySet".(ôÌ»–ÿÿÿÿÿ
+E
+java:S16119"/Remove the parentheses around the "f" parameter(àžµ¨
