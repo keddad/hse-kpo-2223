@@ -1,17 +1,17 @@
 package edu.keddad.stasi.HumanAgent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.keddad.stasi.EqipmentAgent.MenuEqipment;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamCookers {
+public class TeamCooker {
+
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Cooker {
+    public static class Cookers {
 
         public int id;
 
@@ -22,6 +22,6 @@ public class TeamCookers {
         long ReserveTime = 0;
     }
 
-    public static Cooker[] humans;
+    public Cookers[] cookers;
 
 }

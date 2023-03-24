@@ -2,6 +2,7 @@ package edu.keddad.stasi.HumanAgent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -11,14 +12,14 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 public class HumanAgent extends Agent {
-    private TeamCookers team;
+    private TeamCooker team;
 
     @Override
     protected void setup() {
-        YellowBooks.registerRecipient(this, "humans");
+        YellowBooks.registerRecipient(this, "cookers");
 
         try {
-            team = new ObjectMapper().readValue(Paths.get((String) getArguments()[1]).toFile(), TeamCookers.class);
+            team = new ObjectMapper().readValue(Paths.get((String) getArguments()[1]).toFile(), TeamCooker.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -32,7 +33,7 @@ public class HumanAgent extends Agent {
                     if (contents.startsWith("reserve")) {
                         try {
                             CookerRequest rd = new ObjectMapper().readValue(
-                                    contents,
+                                    contents.substring(contents.indexOf(' ')),
                                     CookerRequest.class
 
                             );
@@ -64,8 +65,8 @@ public class HumanAgent extends Agent {
         long workTime = 0;
         for (CookerRequest.CookEntry request : rd.cookers) {
             long minTime = Long.MAX_VALUE;
-            TeamCookers.Cooker betterCooker = null;
-            for (TeamCookers.Cooker cooker : TeamCookers.humans) {
+            TeamCooker.Cookers betterCooker = null;
+            for (TeamCooker.Cookers cooker : team.cookers) {
                 if (cooker.ReserveTime < minTime && cooker.active) {
                     minTime = cooker.ReserveTime;
                     betterCooker = cooker;
