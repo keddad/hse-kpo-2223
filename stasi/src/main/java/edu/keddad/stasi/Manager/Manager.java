@@ -2,10 +2,13 @@ package edu.keddad.stasi.Manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.keddad.stasi.Messaging.AgentRuntime;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -59,16 +62,33 @@ public class Manager extends Agent{
     private void handleOrderRequest(OrderRequest rd, ACLMessage msg) {
         System.out.printf("Got order request with %d items!\n", rd.items.length);
 
-        ACLMessage reply = msg.createReply();
-
-        if (ThreadLocalRandom.current().nextInt(0, 2) == 1) {
-            reply.setPerformative(ACLMessage.CONFIRM);
-        } else {
-            reply.setPerformative(ACLMessage.FAILURE);
+        try {
+            AgentRuntime.createAgent("edu.keddad.stasi.Order.Order", "order_" + msg.getReplyWith(), new String[] {
+                    (String) getArguments()[0],
+                    msg.getReplyWith(),
+                    new ObjectMapper().writeValueAsString(rd)
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
 
-        send(reply);
-        System.out.println("Sending order response message!");
+        addBehaviour(new OneShotBehaviour() {
+            @Override
+            public void action() {
+                MessageTemplate mt = MessageTemplate.MatchInReplyTo(msg.getReplyWith());
+
+                ACLMessage replyFromOrder = null;
+
+                while (replyFromOrder == null) {
+                    block();
+                    replyFromOrder = myAgent.receive(mt);
+                }
+
+                ACLMessage replyToClient = msg.createReply();
+                replyToClient.setPerformative(replyFromOrder.getPerformative());
+                send(replyToClient);
+            }
+        });
     }
 
 }

@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public final class Controller {
-    private final ContainerController containerController;
+    public static ContainerController containerController = null;
 
     // Agents which manage resources and spawn on startup
     private final static Map<String, String[]> singletonAgents = Map.of(
             "edu.keddad.stasi.Manager.Manager", new String[]{"menu_dishes.json"},
-            "edu.keddad.stasi.EqipmentAgent.EqipmentAgent", new String[]{"eqipment.json", "eqipment_type.json"},
+            "edu.keddad.stasi.EqipmentAgent.EqipmentAgent", new String[]{"equipment.json", "equipment_type.json"},
             "edu.keddad.stasi.HumanAgent.HumanAgent", new String[]{"cookers.json"},
             "edu.keddad.stasi.InstructionStorage.InstructionStorage", new String[]{"dish_cards.json", "product_types.json"},
             "edu.keddad.stasi.Storage.Storage", new String[]{"products.json", "product_types.json"},
