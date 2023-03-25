@@ -86,6 +86,7 @@ public class Manager extends Agent{
 
                 ACLMessage replyToClient = msg.createReply();
                 replyToClient.setPerformative(replyFromOrder.getPerformative());
+                replyToClient.setContent(replyFromOrder.getContent());
                 send(replyToClient);
             }
         });

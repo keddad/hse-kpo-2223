@@ -8,18 +8,32 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class ResourceReserver extends Agent {
     @Override
     protected void setup() {
-        YellowBooks.registerRecipient(this, "eqipment");
+        YellowBooks.registerRecipient(this, "resourcereserver");
         addBehaviour(new CyclicBehaviour() {
             @Override
             public void action() {
                 ACLMessage msg = receive();
 
                 if (msg != null) {
-                    String contents = msg.getContent();
+                    ACLMessage response = msg.createReply();
 
+                    if (ThreadLocalRandom.current().nextInt(1, 11) == 1) {
+                        response.setPerformative(ACLMessage.FAILURE);
+                    } else {
+                        response.setPerformative(ACLMessage.CONFIRM);
+                        try {
+                            response.setContent(new ObjectMapper().writeValueAsString(new DishReserveResponse(123)));
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    send(response);
 
                 } else {
                     block();
