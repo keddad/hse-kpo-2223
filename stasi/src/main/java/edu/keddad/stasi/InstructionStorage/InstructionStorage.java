@@ -2,8 +2,6 @@ package edu.keddad.stasi.InstructionStorage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.keddad.stasi.EqipmentAgent.EqipmentRequest;
-import edu.keddad.stasi.EqipmentAgent.MenuEqipment;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -42,14 +40,8 @@ public class InstructionStorage extends Agent {
                             throw new RuntimeException(e);
                         }
                         ACLMessage reply = msg.createReply();
-
-//                        if (getInstruct(rd)) {
-//                            reply.setContent("true");
-//                        } else {
-//                            reply.setContent("");
-//                        }
+                        reply.setContent(getInstruct(rd));
                         send(reply);
-
                     } else {
                         block();
                     }
@@ -63,7 +55,7 @@ public class InstructionStorage extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private void getInstruct(InstructionRequest request) {
+    private String getInstruct(InstructionRequest request) {
 
     }
 
