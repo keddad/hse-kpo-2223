@@ -7,7 +7,7 @@ import jade.wrapper.StaleProxyException;
 public class AgentRuntime {
 
     // oh god
-    public static void createAgent(String className, String agentName, Object[] args ) {
+    public static String createAgent(String className, String agentName, Object[] args ) {
         try {
             AgentController ac = Controller.containerController.createNewAgent(
                     agentName,
@@ -16,6 +16,8 @@ public class AgentRuntime {
             );
 
             ac.start();
+
+            return ac.getName();
         } catch (StaleProxyException e) {
             throw new RuntimeException(e);
         }

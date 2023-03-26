@@ -22,7 +22,7 @@ public class ResourceReserver extends Agent {
                 if (msg != null) {
                     ACLMessage response = msg.createReply();
 
-                    if (ThreadLocalRandom.current().nextInt(1, 11) == 1) {
+                    if (ThreadLocalRandom.current().nextInt(1, 3) == 1) {
                         response.setPerformative(ACLMessage.FAILURE);
                     } else {
                         response.setPerformative(ACLMessage.CONFIRM);

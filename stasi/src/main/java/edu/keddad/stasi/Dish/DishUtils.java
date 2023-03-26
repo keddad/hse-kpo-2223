@@ -12,12 +12,10 @@ public class DishUtils {
         ArrayList<String> names = new ArrayList<>();
 
         Arrays.stream(items).forEach(it -> {
-            AgentRuntime.createAgent(
+            names.add(AgentRuntime.createAgent(
                     "edu.keddad.stasi.Dish.Dish",
-                    "dish_" + conversationId + "_" + it.OrderDishId ,
-                    new Object[]{logPath, reportTo, conversationId, it.MenuDishId});
-
-            names.add("dish_" + conversationId + "_" + it.MenuDishId);
+                    "dish_" + conversationId + "_" + it.OrderDishId + "_" + it.MenuDishId,
+                    new Object[]{logPath, reportTo, conversationId, it.MenuDishId}));
         });
 
         return names;

@@ -6,6 +6,7 @@ import edu.keddad.stasi.Dish.DishUtils;
 import edu.keddad.stasi.Messaging.AgentRuntime;
 import edu.keddad.stasi.Messaging.OrderEntry;
 import edu.keddad.stasi.Messaging.YellowBooks;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
@@ -109,7 +110,7 @@ public class Manager extends Agent {
         }).toArray(OrderEntry[]::new);
 
         String conversation = UUID.randomUUID().toString();
-        DishUtils.enqueueDishes(orderEntries, (String) getArguments()[0], getAID(), conversation);
+        List<String> queuedAgents = DishUtils.enqueueDishes(orderEntries, (String) getArguments()[0], getAID(), conversation);
 
         List<Integer> succeededReservations = new ArrayList<>();
 
@@ -147,6 +148,12 @@ public class Manager extends Agent {
                         }
 
                         send(clientResponse);
+
+                        ACLMessage dishAbortMessage = new ACLMessage(ACLMessage.REQUEST);
+
+                        queuedAgents.forEach(it -> {dishAbortMessage.addReceiver(new AID(it));});
+
+                        send(dishAbortMessage);
                     }
                 } else {
                     block();
