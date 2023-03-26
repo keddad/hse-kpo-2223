@@ -64,6 +64,7 @@ public class Client extends Agent {
 
                     if (reply != null) {
                         if (reply.getPerformative() == ACLMessage.CONFIRM) {
+
                             System.out.println("We made an order!");
                         } else if (reply.getPerformative() == ACLMessage.FAILURE) {
                             System.out.println("No order was placed.");

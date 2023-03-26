@@ -85,7 +85,6 @@ public class InstructionStorage extends Agent {
             for (DishInstuctions.DishInstruction.Operation.Product prod : item.products) {
                 if (saveProducts.containsKey(prod.id)) {
 
-                    // проверить данное выражение
                     saveProducts.get(prod.id).quantity +=
                             prod.quantity;
                 } else {
@@ -94,12 +93,7 @@ public class InstructionStorage extends Agent {
             }
         }
 
-
-        //new InstructionAnswer(result.time, result.equipmentId, saveTypes.toArray(InstructionAnswer.OrderType[]::new), saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new));
-        System.out.println(new ObjectMapper().writeValueAsString(new InstructionAnswer(result.time, result.equipmentId, saveTypes.toArray(InstructionAnswer.OrderType[]::new), saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new))));
-
-        // return (new ObjectMapper().writeValueAsString(result));
-        return ("KEFTEME");
+        return (new ObjectMapper().writeValueAsString(new InstructionAnswer(result.time, result.equipmentId, saveTypes.toArray(InstructionAnswer.OrderType[]::new), saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new))));
     }
 
 }

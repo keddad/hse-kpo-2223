@@ -24,7 +24,7 @@ public class InstructionAnswer {
         public double quantity;
     }
 
-    OrderType[] types;
-    OrderProduct[] products;
+    public OrderType[] types;
+    public OrderProduct[] products;
 
 }
