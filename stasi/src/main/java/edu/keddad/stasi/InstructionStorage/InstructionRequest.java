@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InstructionRequest {
-    int id;
+    public int id;
 }

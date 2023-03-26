@@ -28,7 +28,7 @@ public class InstructionStorage extends Agent {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        System.out.println("Заходит 9");
 
         addBehaviour(new CyclicBehaviour() {
             @Override
@@ -38,16 +38,20 @@ public class InstructionStorage extends Agent {
                 if (msg != null) {
                     InstructionRequest rd;
                     String contents = msg.getContent();
+                    System.out.println("Заходит 7");
                     if (contents.startsWith("instruct")) {
+                        System.out.println("Заходит 6");
                         try {
                             rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), InstructionRequest.class);
 
                         } catch (JsonProcessingException e) {
                             throw new RuntimeException(e);
                         }
+                        System.out.println("Заходит 2");
                         ACLMessage reply = msg.createReply();
                         try {
                             reply.setContent(getInstruct(rd));
+                            System.out.println("Заходит3");
                         } catch (JsonProcessingException e) {
                             throw new RuntimeException(e);
                         }
@@ -82,7 +86,7 @@ public class InstructionStorage extends Agent {
             saveTypes.add(new InstructionAnswer.OrderType(item.type, item.async_point));
         }
         Map<Integer, DishInstuctions.DishInstruction.Operation.Product> saveProducts = new HashMap<Integer, DishInstuctions.DishInstruction.Operation.Product>();
-
+        System.out.println("Заходит 1");
         for (DishInstuctions.DishInstruction.Operation item : instr.operations) {
             for (DishInstuctions.DishInstruction.Operation.Product prod : item.products) {
                 if (saveProducts.containsKey(prod.id)) {
@@ -95,10 +99,10 @@ public class InstructionStorage extends Agent {
                 }
             }
         }
-
+        System.out.println("Заходит");
         result.types = saveTypes.toArray(InstructionAnswer.OrderType[]::new);
         result.products = saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new);
-
+        System.out.println(new ObjectMapper().writeValueAsString(result));
         return (new ObjectMapper().writeValueAsString(result));
     }
 

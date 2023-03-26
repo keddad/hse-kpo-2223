@@ -36,7 +36,7 @@ public class EqipmentAgent extends Agent {
                             EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
                             ACLMessage reply = msg.createReply();
 
-                                reply.setContent(Long.toString(checkReserve(rd)));
+                            reply.setContent(Long.toString(checkReserve(rd)));
 
                             send(reply);
 
@@ -59,23 +59,31 @@ public class EqipmentAgent extends Agent {
     }
 
     private long checkReserve(EqipmentRequest rd) {
-
+        long workTime = 0;
         for (EqipmentRequest.EqipmentEntry req : rd.equipment) {
+            MenuEqipment.MenuEquipments betterEquipment = null;
+            long minTime = Long.MAX_VALUE;
             for (MenuEqipment.MenuEquipments eq : eqipment.equipment) {
                 if (req.type == eq.type && eq.active) {
-                    if (eq.ReserveTime < System.currentTimeMillis()) {
-                        //
-                        System.out.println(System.currentTimeMillis());
-                        eq.ReserveTime = System.currentTimeMillis() + req.CookTime;
-                        //
-                        System.out.println(eq.ReserveTime);
-                    } else {
-                        return System.currentTimeMillis();
+                    if (eq.ReserveTime < minTime) {
+                        minTime = eq.ReserveTime;
+                        betterEquipment = eq;
+
                     }
                 }
             }
+            assert betterEquipment != null;
+            if (betterEquipment.ReserveTime < System.currentTimeMillis()) {
+                betterEquipment.ReserveTime = req.CookTime + System.currentTimeMillis();
+            } else {
+                betterEquipment.ReserveTime += req.CookTime;
+            }
+            if(betterEquipment.ReserveTime > workTime){
+                workTime = betterEquipment.ReserveTime;
+            }
         }
-        return System.currentTimeMillis();
+        System.out.println(workTime);
+        return workTime;
     }
 
 }
