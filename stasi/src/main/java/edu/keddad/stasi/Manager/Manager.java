@@ -24,6 +24,9 @@ import java.util.UUID;
 public class Manager extends Agent {
     private MenuDishes menu;
 
+    public int dishRequests = 0;
+    public int menuRequests = 0;
+
     @Override
     protected void setup() {
         YellowBooks.registerRecipient(this, "manager");
@@ -45,6 +48,7 @@ public class Manager extends Agent {
                     String contents = msg.getContent();
 
                     if (contents.startsWith(OrderRequest.mnemonic)) {
+                        dishRequests += 1;
                         try {
                             OrderRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), OrderRequest.class);
 
@@ -53,6 +57,7 @@ public class Manager extends Agent {
                             throw new RuntimeException(e);
                         }
                     } else if (contents.startsWith(MenuRequest.mnemonic)) {
+                        menuRequests += 1;
                         menuRequest(msg);
                     }
 
@@ -67,6 +72,13 @@ public class Manager extends Agent {
     @Override
     protected void takeDown() {
         System.out.println("Agent " + getAID().getName() + " terminating");
+
+        LogObject lj = new LogObject(dishRequests, menuRequests);
+        try {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(Paths.get((String) getArguments()[0], getName().replaceAll("[^\\w.]", "_") + ".json").toFile(), lj);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void handleOrderRequest(OrderRequest rd, ACLMessage msg) {
