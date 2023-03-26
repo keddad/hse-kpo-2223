@@ -4,11 +4,11 @@
   "ord_dishes": [
     {
       "ord_id": 625,
-      "menu_dish": 1
+      "menu_dish_id": 1
     },
     {
       "ord_id": 626,
-      "menu_dish": 2
+      "menu_dish_id": 2
     }
   ]
 }
