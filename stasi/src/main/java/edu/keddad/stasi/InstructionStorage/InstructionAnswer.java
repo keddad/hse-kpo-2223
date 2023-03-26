@@ -12,6 +12,7 @@ public class InstructionAnswer {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class OrderType {
+        public long operationTime;
         public int type;
         public int async_point;
     }

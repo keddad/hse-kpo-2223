@@ -8,6 +8,7 @@
       "equipment_required": 1,
       "operations": [
         {
+          "oper_time": 0.15,
           "type": 111,
           "async_point": 0,
           "products": [
@@ -35,6 +36,7 @@
       "equipment_required": 1,
       "operations": [
         {
+          "oper_time": 0.4,
           "type": 112,
           "async_point": 0,
           "products": [
@@ -70,6 +72,7 @@
       "equipment_required": 2,
       "operations": [
         {
+          "oper_time": 0.2,
           "type": 114,
           "async_point": 1,
           "products": [
@@ -84,6 +87,7 @@
           ]
         },
         {
+          "oper_time": 0.15,
           "type": 114,
           "async_point": 1,
           "products": [
@@ -98,6 +102,7 @@
           ]
         },
         {
+          "oper_time": 0.3,
           "type": 111,
           "async_point": 2,
           "products": [

@@ -19,6 +19,7 @@ public class DishInstuctions {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class Operation {
+            public long operationTime;
             public int type;
             public int async_point;
 

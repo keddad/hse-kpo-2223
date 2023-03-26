@@ -2,6 +2,7 @@ package edu.keddad.stasi.InstructionStorage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -76,7 +77,7 @@ public class InstructionStorage extends Agent {
         result.time = instr.card_time;
         List<InstructionAnswer.OrderType> saveTypes = new ArrayList<InstructionAnswer.OrderType>();
         for (DishInstuctions.DishInstruction.Operation item : instr.operations) {
-            saveTypes.add(new InstructionAnswer.OrderType(item.type, item.async_point));
+            saveTypes.add(new InstructionAnswer.OrderType(item.operationTime, item.type, item.async_point));
         }
         Map<Integer, InstructionAnswer.OrderProduct> saveProducts = new HashMap<Integer, InstructionAnswer.OrderProduct>();
 
@@ -93,12 +94,12 @@ public class InstructionStorage extends Agent {
             }
         }
 
-        result.types = saveTypes.toArray(InstructionAnswer.OrderType[]::new);
-        result.products = saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new);
 
-        System.out.println(new ObjectMapper().writeValueAsString(result));
+        //new InstructionAnswer(result.time, result.equipmentId, saveTypes.toArray(InstructionAnswer.OrderType[]::new), saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new));
+        System.out.println(new ObjectMapper().writeValueAsString(new InstructionAnswer(result.time, result.equipmentId, saveTypes.toArray(InstructionAnswer.OrderType[]::new), saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new))));
 
-        return (new ObjectMapper().writeValueAsString(result));
+        // return (new ObjectMapper().writeValueAsString(result));
+        return ("KEFTEME");
     }
 
 }
