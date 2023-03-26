@@ -11,12 +11,10 @@ public class DishUtils {
     public static ArrayList<String> enqueueDishes(OrderEntry[] items, String logPath, AID reportTo, String conversationId) {
         ArrayList<String> names = new ArrayList<>();
 
-        Arrays.stream(items).forEach(it -> {
-            names.add(AgentRuntime.createAgent(
-                    "edu.keddad.stasi.Dish.Dish",
-                    "dish_" + conversationId + "_" + it.OrderDishId + "_" + it.MenuDishId,
-                    new Object[]{logPath, reportTo, conversationId, it.MenuDishId}));
-        });
+        Arrays.stream(items).forEach(it -> names.add(AgentRuntime.createAgent(
+                "edu.keddad.stasi.Dish.Dish",
+                "dish_" + conversationId + "_" + it.OrderDishId + "_" + it.MenuDishId,
+                new Object[]{logPath, reportTo, conversationId, it.MenuDishId})));
 
         return names;
     }

@@ -2,7 +2,6 @@ package edu.keddad.stasi.InstructionStorage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -75,11 +74,11 @@ public class InstructionStorage extends Agent {
         assert instr != null;
         result.equipmentId = instr.equipment_required;
         result.time = instr.card_time;
-        List<InstructionAnswer.OrderType> saveTypes = new ArrayList<InstructionAnswer.OrderType>();
+        List<InstructionAnswer.OrderType> saveTypes = new ArrayList<>();
         for (DishInstuctions.DishInstruction.Operation item : instr.operations) {
             saveTypes.add(new InstructionAnswer.OrderType(item.operationTime, item.type, item.async_point));
         }
-        Map<Integer, InstructionAnswer.OrderProduct> saveProducts = new HashMap<Integer, InstructionAnswer.OrderProduct>();
+        Map<Integer, InstructionAnswer.OrderProduct> saveProducts = new HashMap<>();
 
         for (DishInstuctions.DishInstruction.Operation item : instr.operations) {
             for (DishInstuctions.DishInstruction.Operation.Product prod : item.products) {
