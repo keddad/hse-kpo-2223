@@ -46,7 +46,11 @@ public class InstructionStorage extends Agent {
                             throw new RuntimeException(e);
                         }
                         ACLMessage reply = msg.createReply();
-//                        reply.setContent(getInstruct(rd));
+                        try {
+                            reply.setContent(getInstruct(rd));
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
                         send(reply);
                     } else {
                         block();
@@ -61,7 +65,7 @@ public class InstructionStorage extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private String getInstruct(InstructionRequest request) {
+    private String getInstruct(InstructionRequest request) throws JsonProcessingException {
         DishInstuctions.DishInstruction instr = null;
         for (DishInstuctions.DishInstruction item : instructions.dish_cards) {
             if (item.id == request.id) {
@@ -91,12 +95,11 @@ public class InstructionStorage extends Agent {
                 }
             }
         }
-//        InstructionAnswer rq = new InstructionAnswer(new InstructionAnswer.OrderType[]{
-//                new OrderEntry(1, 2),
-//                new OrderEntry(2, 2),
-//                new OrderEntry(3, 4),
-//        });
-        return ("Negri");
+
+        result.types = saveTypes.toArray(InstructionAnswer.OrderType[]::new);
+        result.products = saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new);
+
+        return (new ObjectMapper().writeValueAsString(result));
     }
 
     private static boolean isDigit(String s) throws NumberFormatException {

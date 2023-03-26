@@ -18,12 +18,12 @@ public class InstructionAnswer {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public class OrderProducts {
+    public class OrderProduct {
         public int id;
         public double quantity;
     }
 
     OrderType[] types;
-    OrderProducts[] products;
+    OrderProduct[] products;
 
 }
