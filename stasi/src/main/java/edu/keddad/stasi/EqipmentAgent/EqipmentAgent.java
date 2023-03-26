@@ -35,11 +35,9 @@ public class EqipmentAgent extends Agent {
                         try {
                             EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
                             ACLMessage reply = msg.createReply();
-                            if (checkReserve(rd)) {
-                                reply.setContent("true");
-                            } else {
-                                reply.setContent("");
-                            }
+
+                                reply.setContent(Long.toString(checkReserve(rd)));
+
                             send(reply);
 
                         } catch (JsonProcessingException e) {
@@ -60,7 +58,7 @@ public class EqipmentAgent extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private boolean checkReserve(EqipmentRequest rd) {
+    private long checkReserve(EqipmentRequest rd) {
 
         for (EqipmentRequest.EqipmentEntry req : rd.equipment) {
             for (MenuEqipment.MenuEquipments eq : eqipment.equipment) {
@@ -71,15 +69,13 @@ public class EqipmentAgent extends Agent {
                         eq.ReserveTime = System.currentTimeMillis() + req.CookTime;
                         //
                         System.out.println(eq.ReserveTime);
-                        return true;
                     } else {
-                        return false;
+                        return System.currentTimeMillis();
                     }
                 }
             }
         }
-
-        return false;
+        return System.currentTimeMillis();
     }
 
 }

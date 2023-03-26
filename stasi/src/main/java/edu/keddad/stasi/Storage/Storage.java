@@ -64,6 +64,7 @@ public class Storage extends Agent {
         for (StorageRequest.Product item : rd.products) {
             for (MenuStorage.Product prod : stock.products) {
                 if (item.id == prod.id && item.quantity > prod.quantity) {
+                    System.out.println("Конец");
                     return false;
                 }
             }
@@ -72,7 +73,10 @@ public class Storage extends Agent {
         for (StorageRequest.Product item : rd.products) {
             for (MenuStorage.Product prod : stock.products) {
                 if (item.id == prod.id) {
+                    System.out.println("Продкт:"+ item.id);
+                    System.out.println("количество:"+ prod.quantity);
                     prod.quantity -= item.quantity;
+                    System.out.println("Стало:"+ prod.quantity);
                 }
             }
         }

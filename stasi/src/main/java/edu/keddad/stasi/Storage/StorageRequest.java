@@ -9,10 +9,10 @@ public class StorageRequest {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public class Product {
-        int id;
-        double quantity;
+    public static class Product {
+        public int id;
+        public double quantity;
     }
 
-    Product[] products;
+    public Product[] products;
 }
