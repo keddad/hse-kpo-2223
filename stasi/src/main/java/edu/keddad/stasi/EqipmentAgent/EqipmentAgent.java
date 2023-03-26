@@ -10,9 +10,14 @@ import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EqipmentAgent extends Agent {
     private MenuEqipment eqipment;
+    private Map<Integer, List<MenuEqipment.MenuEquipments>> deleteObjects = new HashMap<Integer, List<MenuEqipment.MenuEquipments>>();
 
     @Override
     protected void setup() {
@@ -31,30 +36,28 @@ public class EqipmentAgent extends Agent {
                 ACLMessage msg = receive();
                 if (msg != null) {
                     String contents = msg.getContent();
-                    if (contents.startsWith("reserve")||contents.startsWith("delete")) {
-                        if(contents.startsWith("reserve")) {
+                    if (contents.startsWith("reserve") || contents.startsWith("delete")) {
+                        if (contents.startsWith("reserve")) {
                             try {
                                 EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
                                 ACLMessage reply = msg.createReply();
-
-                                reply.setContent(Long.toString(checkReserve(rd)));
-
+                                int deleteId = Integer.parseInt(msg.getReplyWith());
+                                reply.setContent(Long.toString(checkReserve(rd, deleteId)));
                                 send(reply);
 
                             } catch (JsonProcessingException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                        if(contents.startsWith("delete")){
-                            String mes = msg.getReplyWith();
-                            String deleteId = mes.substring(6);
-
+                        if (contents.startsWith("delete")) {
+                            String deleteId = msg.getReplyWith();
                             ACLMessage reply = msg.createReply();
-
-                            //reply.setContent(Long.toString(deleteEquipment(Integer.valueOf(deleteId))));
-
+                            if ((deleteEquipment(Integer.parseInt(deleteId)))) {
+                                reply.setContent("true");
+                            } else {
+                                reply.setContent("");
+                            }
                             send(reply);
-
                         }
 
                     } else {
@@ -71,7 +74,9 @@ public class EqipmentAgent extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private long checkReserve(EqipmentRequest rd) {
+    private long checkReserve(EqipmentRequest rd, int SpecialId) {
+
+        List<MenuEqipment.MenuEquipments> addEquipment = new ArrayList<MenuEqipment.MenuEquipments>();
         long workTime = 0;
         for (EqipmentRequest.EqipmentEntry req : rd.equipment) {
             MenuEqipment.MenuEquipments betterEquipment = null;
@@ -91,17 +96,23 @@ public class EqipmentAgent extends Agent {
             } else {
                 betterEquipment.ReserveTime += req.CookTime;
             }
-            if(betterEquipment.ReserveTime > workTime){
+            addEquipment.add(betterEquipment);
+
+
+            if (betterEquipment.ReserveTime > workTime) {
                 workTime = betterEquipment.ReserveTime;
             }
         }
-        System.out.println(workTime);
+        deleteObjects.put(SpecialId, addEquipment);
         return workTime;
     }
 
-    private boolean deleteEquipment (int deleteId){
+    private boolean deleteEquipment(int deleteId) {
+        List<MenuEqipment.MenuEquipments> deleteEquip = deleteObjects.get(deleteId);
 
-
+        for (MenuEqipment.MenuEquipments item : deleteEquip) {
+            item.ReserveTime = 0;
+        }
         return true;
     }
 
