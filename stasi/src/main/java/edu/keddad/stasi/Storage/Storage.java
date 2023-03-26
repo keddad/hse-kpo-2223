@@ -50,9 +50,9 @@ public class Storage extends Agent {
                             ACLMessage reply = msg.createReply(deleteProducts(msg.getReplyWith()) ? ACLMessage.CONFIRM : ACLMessage.FAILURE);
                             send(reply);
                         }
-                    } else {
-                        block();
                     }
+                    } else {
+                    block();
                 }
             }
         });

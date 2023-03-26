@@ -50,9 +50,9 @@ public class InstructionStorage extends Agent {
                             throw new RuntimeException(e);
                         }
                         send(reply);
-                    } else {
-                        block();
                     }
+                } else {
+                    block();
                 }
             }
         });

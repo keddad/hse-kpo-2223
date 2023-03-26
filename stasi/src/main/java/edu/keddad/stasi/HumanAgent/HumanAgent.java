@@ -56,10 +56,9 @@ public class HumanAgent extends Agent {
                             ACLMessage reply = msg.createReply((deleteCook(msg.getReplyWith())) ? ACLMessage.CONFIRM : ACLMessage.FAILURE);
                             send(reply);
                         }
-
-                    } else {
-                        block();
                     }
+                } else {
+                    block();
                 }
             }
         });
