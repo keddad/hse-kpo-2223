@@ -11,6 +11,7 @@ import edu.keddad.stasi.ResourceReserver.DishReserveResponse;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
@@ -113,6 +114,22 @@ public class Order extends Agent {
             @Override
             public boolean done() {
                 return processed == dishes.size();
+            }
+        });
+
+        addBehaviour(new CyclicBehaviour() {
+            @Override
+            public void action() {
+                MessageTemplate mt = MessageTemplate.MatchInReplyTo("");
+
+                ACLMessage msg = receive(mt);
+
+                if (msg != null) {
+                    cancelAll(dishes);
+                    doDelete();
+                } else {
+                    block();
+                }
             }
         });
 

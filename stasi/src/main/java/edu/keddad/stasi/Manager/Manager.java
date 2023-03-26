@@ -95,6 +95,13 @@ public class Manager extends Agent {
                 replyToClient.setPerformative(replyFromOrder.getPerformative());
                 replyToClient.setContent(replyFromOrder.getContent());
                 send(replyToClient);
+
+                if (replyFromOrder.getPerformative() == ACLMessage.CONFIRM) {
+                    ACLMessage dishDeletion = new ACLMessage(ACLMessage.REQUEST);
+                    dishDeletion.setInReplyTo("");
+                    dishDeletion.addReceiver(replyFromOrder.getSender());
+                    send(dishDeletion);
+                }
             }
         });
     }

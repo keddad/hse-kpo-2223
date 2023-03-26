@@ -9,6 +9,7 @@ import edu.keddad.stasi.Messaging.OrderEntry;
 @AllArgsConstructor
 public class OrderRequest {
     public static String mnemonic = "OrderRequest";
+    public boolean estimate;
 
     public OrderEntry[] items;
 }
