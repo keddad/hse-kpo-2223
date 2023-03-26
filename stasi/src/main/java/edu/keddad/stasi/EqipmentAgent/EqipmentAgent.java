@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class EqipmentAgent extends Agent {
     private MenuEqipment eqipment;
-    private Map<Integer, List<MenuEqipment.MenuEquipments>> deleteObjects = new HashMap<Integer, List<MenuEqipment.MenuEquipments>>();
+    private Map<String, List<MenuEqipment.MenuEquipments>> deleteObjects = new HashMap<String, List<MenuEqipment.MenuEquipments>>();
 
     @Override
     protected void setup() {
@@ -42,8 +42,7 @@ public class EqipmentAgent extends Agent {
                             try {
                                 EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
                                 ACLMessage reply = msg.createReply();
-                                int deleteId = Integer.parseInt(msg.getReplyWith());
-                                reply.setContent(Long.toString(checkReserve(rd, deleteId)));
+                                reply.setContent(Long.toString(checkReserve(rd, msg.getReplyWith())));
                                 send(reply);
 
                             } catch (JsonProcessingException e) {
@@ -53,7 +52,7 @@ public class EqipmentAgent extends Agent {
                         if (contents.startsWith("delete")) {
                             String deleteId = msg.getReplyWith();
                             ACLMessage reply = msg.createReply();
-                            if ((deleteEquipment(Integer.parseInt(deleteId)))) {
+                            if ((deleteEquipment(msg.getReplyWith()))) {
                                 reply.setContent("true");
                             } else {
                                 reply.setContent("");
@@ -75,7 +74,7 @@ public class EqipmentAgent extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private long checkReserve(EqipmentRequest rd, int SpecialId) {
+    private long checkReserve(EqipmentRequest rd, String SpecialId) {
 
         List<MenuEqipment.MenuEquipments> addEquipment = new ArrayList<MenuEqipment.MenuEquipments>();
         long workTime = 0;
@@ -108,7 +107,7 @@ public class EqipmentAgent extends Agent {
         return workTime;
     }
 
-    private boolean deleteEquipment(int deleteId) {
+    private boolean deleteEquipment(String deleteId) {
         List<MenuEqipment.MenuEquipments> deleteEquip = deleteObjects.get(deleteId);
 
         for (MenuEqipment.MenuEquipments item : deleteEquip) {
