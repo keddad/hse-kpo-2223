@@ -10,5 +10,5 @@ public class ClientPull {
 
     public long wait_time;
 
-    OrderEntry[] ord_dishes;
+    public OrderEntry[] ord_dishes;
 }
