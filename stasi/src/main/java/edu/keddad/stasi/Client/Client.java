@@ -22,7 +22,6 @@ import java.util.UUID;
 public class Client extends Agent {
     @Override
     protected void setup() {
-        // This method should recive json in args (?)
 
         DFAgentDescription manager = YellowBooks.findRecipient(this, "manager");
 
