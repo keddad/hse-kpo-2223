@@ -35,7 +35,6 @@ public class Storage extends Agent {
                 ACLMessage msg = receive();
                 if (msg != null) {
                     String contents = msg.getContent();
-                    if (contents.startsWith("reserve") || contents.startsWith("delete")) {
                         if (contents.startsWith("reserve")) {
                             try {
                                 StorageRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), StorageRequest.class);
@@ -51,8 +50,7 @@ public class Storage extends Agent {
                             send(reply);
                         }
                     } else {
-                        block();
-                    }
+                    block();
                 }
             }
         });
