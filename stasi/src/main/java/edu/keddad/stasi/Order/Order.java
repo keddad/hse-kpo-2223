@@ -18,11 +18,16 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.tools.sniffer.Message;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Order extends Agent {
+
+    OrderRequest rd;
+    public boolean reserved = false;
+    public boolean canceled = false;
 
     void cancelAll(List<String> dishes) {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST); // no body needed
@@ -37,8 +42,6 @@ public class Order extends Agent {
     @Override
     protected void setup() {
         // yada yada order magic
-
-        OrderRequest rd;
 
         try {
             rd = new ObjectMapper().readValue((String) getArguments()[2], OrderRequest.class);
@@ -107,6 +110,8 @@ public class Order extends Agent {
                 if (!ok) {
                     cancelAll(dishes);
                     doDelete();
+                } else {
+                    reserved = true;
                 }
 
             }
@@ -125,6 +130,7 @@ public class Order extends Agent {
                 ACLMessage msg = receive(mt);
 
                 if (msg != null) {
+                    canceled = true;
                     cancelAll(dishes);
                     doDelete();
                 } else {
@@ -138,5 +144,11 @@ public class Order extends Agent {
     @Override
     protected void takeDown() {
         System.out.println("Agent " + getAID().getName() + " terminating");
+        LogObject lj = new LogObject(rd, reserved, canceled);
+        try {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(Paths.get((String) getArguments()[0], getName().replaceAll("[^\\w\\.]", "_") + ".json").toFile(), lj);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
