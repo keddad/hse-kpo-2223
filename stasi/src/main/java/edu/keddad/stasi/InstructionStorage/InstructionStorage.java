@@ -40,7 +40,7 @@ public class InstructionStorage extends Agent {
                             throw new RuntimeException(e);
                         }
                         ACLMessage reply = msg.createReply();
-                        reply.setContent(getInstruct(rd));
+//                        reply.setContent(getInstruct(rd));
                         send(reply);
                     } else {
                         block();
@@ -55,9 +55,21 @@ public class InstructionStorage extends Agent {
         System.out.println("Agent " + getAID().getName() + " terminating");
     }
 
-    private String getInstruct(InstructionRequest request) {
-
-    }
+//    private String getInstruct(InstructionRequest request) {
+//        DishInstuctions.DishInstruction instr = null;
+//        for(DishInstuctions.DishInstruction item : instructions.dish_cards){
+//            if(item.id == request.id){
+//                instr = item;
+//                break;
+//            }
+//        }
+//        InstructionAnswer result = new InstructionAnswer();
+//        assert instr != null;
+//        result.equipmentId = instr.equipment_required;
+//        result.time = instr.card_time;
+//
+//
+//    }
 
     private static boolean isDigit(String s) throws NumberFormatException {
         try {

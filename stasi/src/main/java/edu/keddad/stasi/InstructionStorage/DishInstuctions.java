@@ -26,7 +26,7 @@ public class DishInstuctions {
             @AllArgsConstructor
             public static class Product {
                 public int id;
-                public int quantity;
+                public double quantity;
             }
 
             public Product[] products;
