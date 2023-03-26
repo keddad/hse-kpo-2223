@@ -6,9 +6,7 @@ import edu.keddad.stasi.EqipmentAgent.EqipmentRequest;
 import edu.keddad.stasi.HumanAgent.CookerRequest;
 import edu.keddad.stasi.InstructionStorage.InstructionAnswer;
 import edu.keddad.stasi.InstructionStorage.InstructionRequest;
-import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
-import edu.keddad.stasi.Storage.Storage;
 import edu.keddad.stasi.Storage.StorageRequest;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -18,8 +16,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.util.Arrays;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 // https://youtube.com/watch?v=4RHg0f5Nq4c
 public class ResourceReserver extends Agent {
@@ -72,7 +68,7 @@ public class ResourceReserver extends Agent {
 
             int state = 0; // state? sorry, i'm an anarchist
             InstructionAnswer instructions = null;
-            String conversation = clientMsg.getSender().toString();
+            final String conversation = clientMsg.getSender().toString();
 
             long maxtime = 0;
 
@@ -97,7 +93,6 @@ public class ResourceReserver extends Agent {
                 }
 
                 state = 9;
-                return;
             }
 
             @Override

@@ -2,22 +2,17 @@ package edu.keddad.stasi.Client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.keddad.stasi.EqipmentAgent.MenuEqipment;
-import edu.keddad.stasi.InstructionStorage.InstructionAnswer;
 import edu.keddad.stasi.Manager.MenuRequest;
 import edu.keddad.stasi.Manager.MenuResponse;
 import edu.keddad.stasi.Manager.OrderRequest;
-import edu.keddad.stasi.Messaging.OrderEntry;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -120,9 +115,7 @@ public class Client extends Agent {
                         if (reply != null) {
                             try {
                                 MenuResponse mrp = new ObjectMapper().readValue(reply.getContent(), MenuResponse.class);
-                                System.out.println("Currently have this menu items available: " + Arrays.stream(mrp.items).map(it -> {
-                                    return ((Integer) it.id).toString();
-                                }).toList());
+                                System.out.println("Currently have this menu items available: " + Arrays.stream(mrp.items).map(it -> ((Integer) it.id).toString()).toList());
                             } catch (JsonProcessingException e) {
                                 throw new RuntimeException(e);
                             }

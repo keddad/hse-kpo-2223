@@ -132,7 +132,7 @@ public class Dish extends Agent {
     protected void takeDown() {
         LogObject lj = new LogObject(parentAgent.toString(), dishId, reservedOk, caneled);
         try {
-            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(Paths.get(logPath, getName().replaceAll("[^\\w\\.]", "_") + ".json").toFile(), lj);
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(Paths.get(logPath, getName().replaceAll("[^\\w.]", "_") + ".json").toFile(), lj);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

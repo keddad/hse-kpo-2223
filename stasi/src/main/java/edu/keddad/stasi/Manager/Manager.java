@@ -109,13 +109,9 @@ public class Manager extends Agent {
     private void menuRequest(ACLMessage clientMsg) {
         System.out.println("Manager got menuRequest");
 
-        List<MenuDishes.MenuDish> activeDishes = Arrays.stream(menu.dishes).toList().stream().filter(it -> {
-            return it.active;
-        }).toList();
+        List<MenuDishes.MenuDish> activeDishes = Arrays.stream(menu.dishes).toList().stream().filter(it -> it.active).toList();
 
-        OrderEntry[] orderEntries = activeDishes.stream().map(it -> {
-            return new OrderEntry(it.id, it.id);
-        }).toArray(OrderEntry[]::new);
+        OrderEntry[] orderEntries = activeDishes.stream().map(it -> new OrderEntry(it.id, it.id)).toArray(OrderEntry[]::new);
 
         String conversation = UUID.randomUUID().toString();
         List<String> queuedAgents = DishUtils.enqueueDishes(orderEntries, (String) getArguments()[0], getAID(), conversation);
@@ -143,11 +139,7 @@ public class Manager extends Agent {
 
                     if (done()) {
                         ACLMessage clientResponse = clientMsg.createReply();
-                        MenuResponse rp = new MenuResponse(succeededReservations.stream().map(it -> {
-                            return new MenuResponse.Dish(it, Arrays.stream(menu.dishes).filter(d -> {
-                                return d.id == it;
-                            }).findFirst().get().price);
-                        }).toArray(MenuResponse.Dish[]::new));
+                        MenuResponse rp = new MenuResponse(succeededReservations.stream().map(it -> new MenuResponse.Dish(it, Arrays.stream(menu.dishes).filter(d -> d.id == it).findFirst().get().price)).toArray(MenuResponse.Dish[]::new));
 
                         try {
                             clientResponse.setContent(new ObjectMapper().writeValueAsString(rp));
@@ -159,7 +151,7 @@ public class Manager extends Agent {
 
                         ACLMessage dishAbortMessage = new ACLMessage(ACLMessage.REQUEST);
 
-                        queuedAgents.forEach(it -> {dishAbortMessage.addReceiver(new AID(it));});
+                        queuedAgents.forEach(it -> dishAbortMessage.addReceiver(new AID(it)));
 
                         send(dishAbortMessage);
                     }
