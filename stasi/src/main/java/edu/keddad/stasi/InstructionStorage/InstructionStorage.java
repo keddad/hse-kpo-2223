@@ -43,7 +43,11 @@ public class InstructionStorage extends Agent {
                         }
 
                         ACLMessage reply = msg.createReply();
-                            reply.setContent("bdfsefh");
+                        try {
+                            reply.setContent(getInstruct(rd));
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
                         send(reply);
                     } else {
                         block();
@@ -74,7 +78,7 @@ public class InstructionStorage extends Agent {
         for (DishInstuctions.DishInstruction.Operation item : instr.operations) {
             saveTypes.add(new InstructionAnswer.OrderType(item.type, item.async_point));
         }
-        Map<Integer, DishInstuctions.DishInstruction.Operation.Product> saveProducts = new HashMap<Integer, DishInstuctions.DishInstruction.Operation.Product>();
+        Map<Integer, InstructionAnswer.OrderProduct> saveProducts = new HashMap<Integer, InstructionAnswer.OrderProduct>();
 
         for (DishInstuctions.DishInstruction.Operation item : instr.operations) {
             for (DishInstuctions.DishInstruction.Operation.Product prod : item.products) {
@@ -84,16 +88,17 @@ public class InstructionStorage extends Agent {
                     saveProducts.get(prod.id).quantity +=
                             prod.quantity;
                 } else {
-                    saveProducts.put(prod.id, prod);
+                    saveProducts.put(prod.id, new InstructionAnswer.OrderProduct(prod.id, prod.quantity));
                 }
             }
         }
-        // ошибка в преобразовании массива // следующие две строчки
-//        result.types = saveTypes.toArray(InstructionAnswer.OrderType[]::new);
-//        result.products = saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new);
+
+        result.types = saveTypes.toArray(InstructionAnswer.OrderType[]::new);
+        result.products = saveProducts.values().toArray(InstructionAnswer.OrderProduct[]::new);
+
         System.out.println(new ObjectMapper().writeValueAsString(result));
-        System.out.println("Work");
-        return ("res");
+
+        return (new ObjectMapper().writeValueAsString(result));
     }
 
 }

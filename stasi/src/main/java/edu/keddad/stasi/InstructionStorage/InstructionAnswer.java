@@ -18,7 +18,7 @@ public class InstructionAnswer {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public class OrderProduct {
+    public static class OrderProduct {
         public int id;
         public double quantity;
     }
