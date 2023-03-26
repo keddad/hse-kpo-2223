@@ -2,7 +2,6 @@ package edu.keddad.stasi.HumanAgent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -17,7 +16,7 @@ import java.util.Map;
 
 public class HumanAgent extends Agent {
     private TeamCooker team;
-    private Map<String, List<TeamCooker.Cookers>> delCookers = new HashMap<>();
+    private final Map<String, List<TeamCooker.Cookers>> delCookers = new HashMap<>();
 
     @Override
     protected void setup() {
