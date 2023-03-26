@@ -86,7 +86,7 @@ public class Client extends Agent {
 
         // We ask for menu to demonstrate that we can.
         // Yes, we can.
-        addBehaviour(new TickerBehaviour(this, 15000) {
+        addBehaviour(new TickerBehaviour(this, 120000) {
             @Override
             protected void onTick() {
                 String message = MenuRequest.mnemonic;
