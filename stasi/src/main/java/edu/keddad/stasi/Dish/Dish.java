@@ -14,6 +14,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 public class Dish extends Agent {
@@ -22,7 +24,8 @@ public class Dish extends Agent {
 
     private String logPath;
 
-    private boolean kurtShotgun;
+    private boolean reservedOk = false;
+    private boolean caneled = true;
 
     private int dishId;
 
@@ -66,8 +69,10 @@ public class Dish extends Agent {
 
                         send(replyMsg);
 
-                        if (reply.getPerformative() == ACLMessage.FAILURE || kurtShotgun) {
+                        if (reply.getPerformative() == ACLMessage.FAILURE) {
                             doDelete();
+                        } else {
+                            reservedOk = true;
                         }
 
                         isDone = true;
@@ -116,8 +121,20 @@ public class Dish extends Agent {
                     return;
                 }
 
+                caneled = true;
+
                 tryCancel();
             }
         });
+    }
+
+    @Override
+    protected void takeDown() {
+        LogObject lj = new LogObject(parentAgent.toString(), dishId, reservedOk, caneled);
+        try {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(Paths.get(logPath, getName().replaceAll("[^\\w\\.]", "_") + ".json").toFile(), lj);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
