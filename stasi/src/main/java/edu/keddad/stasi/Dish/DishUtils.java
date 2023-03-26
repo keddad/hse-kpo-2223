@@ -14,7 +14,7 @@ public class DishUtils {
         Arrays.stream(items).forEach(it -> {
             AgentRuntime.createAgent(
                     "edu.keddad.stasi.Dish.Dish",
-                    "dish_" + conversationId + "_" + it.OrderDishId,
+                    "dish_" + conversationId + "_" + it.OrderDishId ,
                     new Object[]{logPath, reportTo, conversationId, it.MenuDishId});
 
             names.add("dish_" + conversationId + "_" + it.MenuDishId);
