@@ -14,6 +14,11 @@ public class MenuStorage {
         public int type;
         public String name;
         public double quantity;
+
+        public Product(int id, double quantity) {
+            this.quantity = quantity;
+            this.id = id;
+        }
     }
 
     public Product[] products;
