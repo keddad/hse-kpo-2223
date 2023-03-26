@@ -31,17 +31,32 @@ public class EqipmentAgent extends Agent {
                 ACLMessage msg = receive();
                 if (msg != null) {
                     String contents = msg.getContent();
-                    if (contents.startsWith("reserve")) {
-                        try {
-                            EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
-                            ACLMessage reply = msg.createReply();
+                    if (contents.startsWith("reserve")||contents.startsWith("delete")) {
+                        if(contents.startsWith("reserve")) {
+                            try {
+                                EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
+                                ACLMessage reply = msg.createReply();
 
-                            reply.setContent(Long.toString(checkReserve(rd)));
+                                reply.setContent(Long.toString(checkReserve(rd)));
 
-                            send(reply);
+                                send(reply);
 
-                        } catch (JsonProcessingException e) {
-                            throw new RuntimeException(e);
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        if(contents.startsWith("delete")){
+                            try {
+                                EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
+                                ACLMessage reply = msg.createReply();
+
+                                reply.setContent(Long.toString(checkReserve(rd)));
+
+                                send(reply);
+
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
 
                     } else {
