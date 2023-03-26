@@ -70,6 +70,7 @@ public class Manager extends Agent {
     }
 
     private void handleOrderRequest(OrderRequest rd, ACLMessage msg) {
+
         System.out.printf("Got order request with %d items!\n", rd.items.length);
 
         try {

@@ -9,10 +9,9 @@ public class EqipmentRequest {
 
     @NoArgsConstructor
     @AllArgsConstructor
-
     public static class   EqipmentEntry {
-        public int type; // Unique in order?
-        public int CookTime;
+        public long type; // Unique in order?
+        public long CookTime;
     }
 
     public EqipmentEntry[] equipment;

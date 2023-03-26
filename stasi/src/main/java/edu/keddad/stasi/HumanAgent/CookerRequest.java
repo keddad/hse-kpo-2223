@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CookerRequest {
 
-    public class CookEntry {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CookEntry {
         public long CookTime;
     }
 

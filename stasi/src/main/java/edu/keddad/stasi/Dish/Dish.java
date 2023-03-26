@@ -36,6 +36,8 @@ public class Dish extends Agent {
 
                 msg.addReceiver(resourceReserver.getName());
                 msg.setReplyWith(UUID.randomUUID().toString());
+                msg.setInReplyTo("");
+
                 try {
                     msg.setContent(DishReserveRequest.mnemonic + " " + new ObjectMapper().writeValueAsString(new DishReserveRequest(dishId)));
                 } catch (JsonProcessingException e) {
@@ -61,6 +63,7 @@ public class Dish extends Agent {
                         replyMsg.setContent(reply.getContent());
                         replyMsg.addReceiver(parentAgent);
                         replyMsg.setInReplyTo(parentConversationId);
+
                         send(replyMsg);
 
                         if (reply.getPerformative() == ACLMessage.FAILURE || kurtShotgun) {
@@ -81,10 +84,10 @@ public class Dish extends Agent {
 
     private void tryCancel() {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-
         msg.addReceiver(resourceReserver.getName());
-
         msg.setContent(DishCancelRequest.mnemonic);
+        msg.setInReplyTo("");
+
         send(msg);
         doDelete();
     }
