@@ -11,7 +11,7 @@ public class DishInstuctions {
         public int id;
 
         public String dish_name;
-
+        public String card_descr;
         public long card_time;
 
         public int equipment_required;
