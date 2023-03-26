@@ -48,12 +48,7 @@ public class EqipmentAgent extends Agent {
                             }
                         }
                         if (contents.startsWith("delete")) {
-                            ACLMessage reply = msg.createReply();
-                            if ((deleteEquipment(msg.getReplyWith()))) {
-                                reply.setContent("true");
-                            } else {
-                                reply.setContent("");
-                            }
+                            ACLMessage reply = msg.createReply((deleteEquipment(msg.getReplyWith())) ? ACLMessage.CONFIRM : ACLMessage.FAILURE);
                             send(reply);
                         }
 

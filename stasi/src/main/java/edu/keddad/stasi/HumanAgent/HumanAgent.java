@@ -52,12 +52,8 @@ public class HumanAgent extends Agent {
                             }
                         }
                         if (contents.startsWith("delete")) {
-                            ACLMessage reply = msg.createReply();
-                            if (deleteCook(msg.getReplyWith())) {
-                                reply.setContent("true");
-                            } else {
-                                reply.setContent("false");
-                            }
+
+                            ACLMessage reply = msg.createReply((deleteCook(msg.getReplyWith())) ? ACLMessage.CONFIRM : ACLMessage.FAILURE);
                             send(reply);
                         }
 
