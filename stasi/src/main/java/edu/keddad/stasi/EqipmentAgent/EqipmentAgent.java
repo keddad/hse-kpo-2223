@@ -35,26 +35,24 @@ public class EqipmentAgent extends Agent {
                 ACLMessage msg = receive();
                 if (msg != null) {
                     String contents = msg.getContent();
-                    if (contents.startsWith("reserve") || contents.startsWith("delete")) {
-                        if (contents.startsWith("reserve")) {
-                            try {
-                                EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
-                                ACLMessage reply = msg.createReply();
-                                reply.setContent(Long.toString(checkReserve(rd, msg.getReplyWith())));
-                                send(reply);
-
-                            } catch (JsonProcessingException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                        if (contents.startsWith("delete")) {
-                            ACLMessage reply = msg.createReply((deleteEquipment(msg.getReplyWith())) ? ACLMessage.CONFIRM : ACLMessage.FAILURE);
+                    if (contents.startsWith("reserve")) {
+                        try {
+                            EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
+                            ACLMessage reply = msg.createReply();
+                            reply.setContent(Long.toString(checkReserve(rd, msg.getReplyWith())));
                             send(reply);
-                        }
 
-                    } else {
-                        block();
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
+                    if (contents.startsWith("delete")) {
+                        ACLMessage reply = msg.createReply((deleteEquipment(msg.getReplyWith())) ? ACLMessage.CONFIRM : ACLMessage.FAILURE);
+                        send(reply);
+                    }
+
+                } else {
+                    block();
                 }
             }
         });
