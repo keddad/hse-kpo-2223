@@ -11,7 +11,7 @@ public class EqipmentRequest {
     @AllArgsConstructor
 
     public static class   EqipmentEntry {
-        public int OrderDishType; // Unique in order?
+        public int type; // Unique in order?
         public int CookTime;
     }
 

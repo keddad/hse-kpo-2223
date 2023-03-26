@@ -64,9 +64,13 @@ public class EqipmentAgent extends Agent {
 
         for (EqipmentRequest.EqipmentEntry req : rd.equipment) {
             for (MenuEqipment.MenuEquipments eq : eqipment.equipment) {
-                if (req.OrderDishType == eq.type && eq.active) {
+                if (req.type == eq.type && eq.active) {
                     if (eq.ReserveTime < System.currentTimeMillis()) {
+                        //
+                        System.out.println(System.currentTimeMillis());
                         eq.ReserveTime = System.currentTimeMillis() + req.CookTime;
+                        //
+                        System.out.println(eq.ReserveTime);
                         return true;
                     } else {
                         return false;
