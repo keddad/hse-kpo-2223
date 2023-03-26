@@ -24,7 +24,7 @@ public final class Controller {
             "edu.keddad.stasi.ResourceReserver.ResourceReserver", new String[]{"operation_types.json"}
     );
     private final static String clientAgent = "edu.keddad.stasi.Client.Client";
-    private final static String clientConfigFolder = "clients";
+    private final static String clientConfigFolder = "Clients";
     private String configPath;
     private String logPath = "log";
 

@@ -6,6 +6,7 @@ import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;

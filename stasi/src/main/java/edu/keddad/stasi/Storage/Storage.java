@@ -35,12 +35,8 @@ public class Storage extends Agent {
                     if (contents.startsWith("reserve")) {
                         try {
                             StorageRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), StorageRequest.class);
-                            ACLMessage reply = msg.createReply();
-                            if (checkReserve(rd)) {
-                                reply.setContent("true");
-                            } else {
-                                reply.setContent("");
-                            }
+                            ACLMessage reply = msg.createReply(checkReserve(rd) ? ACLMessage.CONFIRM : ACLMessage.FAILURE);
+
                             send(reply);
 
                         } catch (JsonProcessingException e) {

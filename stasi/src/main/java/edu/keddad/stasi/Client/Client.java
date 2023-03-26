@@ -60,7 +60,7 @@ public class Client extends Agent {
                     MessageTemplate mt = MessageTemplate.MatchInReplyTo(msg.getReplyWith());
 
                     ACLMessage reply = myAgent.receive(mt);
-                    ;
+
 
                     if (reply != null) {
                         if (reply.getPerformative() == ACLMessage.CONFIRM) {
