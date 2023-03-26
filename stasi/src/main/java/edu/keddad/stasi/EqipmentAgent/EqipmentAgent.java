@@ -46,17 +46,15 @@ public class EqipmentAgent extends Agent {
                             }
                         }
                         if(contents.startsWith("delete")){
-                            try {
-                                EqipmentRequest rd = new ObjectMapper().readValue(contents.substring(contents.indexOf(' ')), EqipmentRequest.class);
-                                ACLMessage reply = msg.createReply();
+                            String mes = msg.getReplyWith();
+                            String deleteId = mes.substring(6);
 
-                                reply.setContent(Long.toString(checkReserve(rd)));
+                            ACLMessage reply = msg.createReply();
 
-                                send(reply);
+                            //reply.setContent(Long.toString(deleteEquipment(Integer.valueOf(deleteId))));
 
-                            } catch (JsonProcessingException e) {
-                                throw new RuntimeException(e);
-                            }
+                            send(reply);
+
                         }
 
                     } else {
@@ -99,6 +97,12 @@ public class EqipmentAgent extends Agent {
         }
         System.out.println(workTime);
         return workTime;
+    }
+
+    private boolean deleteEquipment (int deleteId){
+
+
+        return true;
     }
 
 }
