@@ -51,6 +51,8 @@ public class ResourceReserver extends Agent {
                         } catch (JsonProcessingException e) {
                             throw new RuntimeException(e);
                         }
+                    } else if (msg.getContent().startsWith(DishCancelRequest.mnemonic)) {
+                        abortHandler(msg);
                     }
 
                 } else {
@@ -70,16 +72,31 @@ public class ResourceReserver extends Agent {
 
             int state = 0; // state? sorry, i'm an anarchist
             InstructionAnswer instructions = null;
-            String conversation = UUID.randomUUID().toString();
+            String conversation = clientMsg.getSender().toString();
 
             long maxtime = 0;
 
             void abort() {
-                state = 9;
-
                 ACLMessage response = clientMsg.createReply(ACLMessage.FAILURE);
                 send(response);
 
+                if (state >= 5) {
+                    ACLMessage produceRequest = new ACLMessage(ACLMessage.REQUEST);
+                    produceRequest.setReplyWith(conversation);
+                    produceRequest.addReceiver(storageAgent.getName());
+                    produceRequest.setContent("delete");
+                    send(produceRequest);
+                }
+
+                if (state >= 7) {
+                    ACLMessage cook = new ACLMessage(ACLMessage.REQUEST);
+                    cook.setReplyWith(conversation);
+                    cook.addReceiver(cookAgent.getName());
+                    cook.setContent("delete");
+                    send(cook);
+                }
+
+                state = 9;
                 return;
             }
 
@@ -230,5 +247,28 @@ public class ResourceReserver extends Agent {
                 return state == 9;
             }
         });
+    }
+
+    private void abortHandler(ACLMessage clientMsg) {
+        String conversation = clientMsg.getSender().toString();
+
+        ACLMessage produceRequest = new ACLMessage(ACLMessage.REQUEST);
+        produceRequest.setReplyWith(conversation);
+        produceRequest.addReceiver(storageAgent.getName());
+        produceRequest.setContent("delete");
+        send(produceRequest);
+
+        ACLMessage equipment = new ACLMessage(ACLMessage.REQUEST);
+        equipment.setReplyWith(conversation);
+        equipment.addReceiver(equipmentAgent.getName());
+        equipment.setContent("delete");
+        send(equipment);
+
+        ACLMessage cook = new ACLMessage(ACLMessage.REQUEST);
+        cook.setReplyWith(conversation);
+        cook.addReceiver(cookAgent.getName());
+        cook.setContent("delete");
+        send(cook);
+        
     }
 }
