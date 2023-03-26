@@ -4,11 +4,11 @@
       "id": 1,
       "dish_name": "Sugary water",
       "card_descr": "pouring boiled water into a paper cup + 2 bags of sugar",
-      "card_time": 15000,
+      "card_time": 10,
       "equipment_required": 1,
       "operations": [
         {
-          "oper_time": 10000,
+          "oper_time": 10,
           "type": 111,
           "async_point": 0,
           "products": [
@@ -32,11 +32,11 @@
       "id": 2,
       "dish_name": "Cat shawerma",
       "card_descr": "Shawerma with magic meat",
-      "card_time": 5000,
+      "card_time": 40,
       "equipment_required": 1,
       "operations": [
         {
-          "oper_time": 4000,
+          "oper_time": 40,
           "type": 112,
           "async_point": 0,
           "products": [
@@ -68,11 +68,11 @@
       "id": 4,
       "dish_name": "Java lecturer, baked in an oven",
       "card_descr": "",
-      "card_time": 10000,
+      "card_time": 65,
       "equipment_required": 2,
       "operations": [
         {
-          "oper_time": 2500,
+          "oper_time": 250,
           "type": 114,
           "async_point": 1,
           "products": [
@@ -87,7 +87,7 @@
           ]
         },
         {
-          "oper_time": 3500,
+          "oper_time": 35,
           "type": 114,
           "async_point": 1,
           "products": [
@@ -102,7 +102,7 @@
           ]
         },
         {
-          "oper_time": 3000,
+          "oper_time": 30,
           "type": 111,
           "async_point": 2,
           "products": [

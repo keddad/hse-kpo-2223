@@ -108,7 +108,7 @@ public class Manager extends Agent {
                 replyToClient.setContent(replyFromOrder.getContent());
                 send(replyToClient);
 
-                if (replyFromOrder.getPerformative() == ACLMessage.CONFIRM) {
+                if (replyFromOrder.getPerformative() == ACLMessage.CONFIRM && rd.estimate) {
                     ACLMessage dishDeletion = new ACLMessage(ACLMessage.REQUEST);
                     dishDeletion.setInReplyTo("");
                     dishDeletion.addReceiver(replyFromOrder.getSender());
