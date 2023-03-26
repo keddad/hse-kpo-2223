@@ -2,11 +2,9 @@ package edu.keddad.stasi.EqipmentAgent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
@@ -18,7 +16,7 @@ import java.util.Map;
 
 public class EqipmentAgent extends Agent {
     private MenuEqipment eqipment;
-    private Map<String, List<MenuEqipment.MenuEquipments>> deleteObjects = new HashMap<String, List<MenuEqipment.MenuEquipments>>();
+    private final Map<String, List<MenuEqipment.MenuEquipments>> deleteObjects = new HashMap<>();
 
     @Override
     protected void setup() {
@@ -50,7 +48,6 @@ public class EqipmentAgent extends Agent {
                             }
                         }
                         if (contents.startsWith("delete")) {
-                            String deleteId = msg.getReplyWith();
                             ACLMessage reply = msg.createReply();
                             if ((deleteEquipment(msg.getReplyWith()))) {
                                 reply.setContent("true");
@@ -76,7 +73,7 @@ public class EqipmentAgent extends Agent {
 
     private long checkReserve(EqipmentRequest rd, String SpecialId) {
 
-        List<MenuEqipment.MenuEquipments> addEquipment = new ArrayList<MenuEqipment.MenuEquipments>();
+        List<MenuEqipment.MenuEquipments> addEquipment = new ArrayList<>();
         long workTime = 0;
         for (EqipmentRequest.EqipmentEntry req : rd.equipment) {
             MenuEqipment.MenuEquipments betterEquipment = null;
