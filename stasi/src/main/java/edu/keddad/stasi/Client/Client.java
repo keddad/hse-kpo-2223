@@ -2,6 +2,7 @@ package edu.keddad.stasi.Client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.keddad.stasi.HumanAgent.TeamCooker;
 import edu.keddad.stasi.Manager.MenuRequest;
 import edu.keddad.stasi.Manager.MenuResponse;
 import edu.keddad.stasi.Manager.OrderRequest;
@@ -20,9 +21,13 @@ import java.util.UUID;
 
 public class Client extends Agent {
     private ClientPull client;
+    private long cookTime;
+    private boolean reservedOK;
+    private LogClient request;
 
     @Override
     protected void setup() {
+
 
         DFAgentDescription manager = YellowBooks.findRecipient(this, "manager");
         try {
@@ -59,9 +64,16 @@ public class Client extends Agent {
 
                     if (reply != null) {
                         if (reply.getPerformative() == ACLMessage.CONFIRM) {
-
+                            try {
+                                request = new ObjectMapper().readValue(Paths.get((String) getArguments()[1]).toFile(), LogClient.class);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            reservedOK = true;
+                            cookTime = request.cookTime;
                             System.out.println("We made an order!");
                         } else if (reply.getPerformative() == ACLMessage.FAILURE) {
+                            reservedOK = false;
                             System.out.println("No order was placed.");
                         } else {
                             throw new RuntimeException("Broken invariant");
@@ -138,7 +150,13 @@ public class Client extends Agent {
 
     @Override
     protected void takeDown() {
-        System.out.println("Agent " + getAID().getName() + " terminating");
+        long time = cookTime;
+        boolean status = reservedOK;
+        LogClient lj = new LogClient(time, status);
+        try {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(Paths.get((String) getArguments()[0], getName().replaceAll("[^\\w.]", "_") + ".json").toFile(), lj);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }
