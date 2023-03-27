@@ -15,6 +15,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 // https://youtube.com/watch?v=4RHg0f5Nq4c
@@ -23,6 +25,10 @@ public class ResourceReserver extends Agent {
     DFAgentDescription storageAgent;
     DFAgentDescription cookAgent;
     DFAgentDescription equipmentAgent;
+
+    public int reserveRequests = 0;
+    public int succesfulReservations = 0;
+    public int abortRequests = 0;
 
     @Override
     protected void setup() {
@@ -41,6 +47,7 @@ public class ResourceReserver extends Agent {
 
                 if (msg != null) {
                     if (msg.getContent().startsWith(DishReserveRequest.mnemonic)) {
+                        reserveRequests += 1;
                         try {
                             DishReserveRequest rd = new ObjectMapper().readValue(msg.getContent().substring(msg.getContent().indexOf(' ')), DishReserveRequest.class);
                             reserveHandler(rd, msg);
@@ -48,6 +55,7 @@ public class ResourceReserver extends Agent {
                             throw new RuntimeException(e);
                         }
                     } else if (msg.getContent().startsWith(DishCancelRequest.mnemonic)) {
+                        abortRequests += 1;
                         abortHandler(msg);
                     }
 
@@ -61,6 +69,13 @@ public class ResourceReserver extends Agent {
     @Override
     protected void takeDown() {
         System.out.println("Agent " + getAID().getName() + " terminating");
+
+        LogObject lj = new LogObject(reserveRequests, succesfulReservations, abortRequests);
+        try {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(Paths.get((String) getArguments()[0], getName().replaceAll("[^\\w.]", "_") + ".json").toFile(), lj);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void reserveHandler(DishReserveRequest ds, ACLMessage clientMsg) {
@@ -231,6 +246,7 @@ public class ResourceReserver extends Agent {
                         }
 
                         send(response);
+                        succesfulReservations += 1;
                         state += 1;
                 }
 

@@ -2,7 +2,7 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="edu.keddad.stasi.Main" />
     <module name="stasi.main" />
-    <option name="PROGRAM_PARAMETERS" value="restaraunt" />
+    <option name="PROGRAM_PARAMETERS" value="restaraunt log" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="edu.keddad.stasi.*" />

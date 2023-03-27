@@ -28,7 +28,7 @@ public final class Controller {
     private String configPath;
     private String logPath = "log";
 
-    public Controller(String configPath) {
+    public Controller(String configPath, String logPath) {
         final Runtime rt = Runtime.instance();
         final Profile p = new ProfileImpl();
 
@@ -42,7 +42,12 @@ public final class Controller {
             configPath = configPath + "/";
         }
 
+        if (!logPath.endsWith("/")) { // unix rulez
+            logPath = logPath + "/";
+        }
+
         this.configPath = configPath;
+        this.logPath = logPath;
     }
 
     public void initAgents() throws jade.wrapper.StaleProxyException {

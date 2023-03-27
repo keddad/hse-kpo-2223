@@ -36,7 +36,7 @@ public class Client extends Agent {
             throw new RuntimeException(e);
         }
 
-        OrderRequest rq = new OrderRequest(true, client.ord_dishes);
+        OrderRequest rq = new OrderRequest(false, client.ord_dishes);
         try {
             String message = OrderRequest.mnemonic + " " + new ObjectMapper().writeValueAsString(rq);
 
