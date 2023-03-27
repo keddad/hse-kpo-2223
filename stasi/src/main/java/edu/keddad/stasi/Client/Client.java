@@ -2,11 +2,11 @@ package edu.keddad.stasi.Client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.keddad.stasi.HumanAgent.TeamCooker;
 import edu.keddad.stasi.Manager.MenuRequest;
 import edu.keddad.stasi.Manager.MenuResponse;
 import edu.keddad.stasi.Manager.OrderRequest;
 import edu.keddad.stasi.Messaging.YellowBooks;
+import edu.keddad.stasi.ResourceReserver.DishReserveResponse;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
@@ -23,7 +23,7 @@ public class Client extends Agent {
     private ClientPull client;
     private long cookTime;
     private boolean reservedOK;
-    private LogClient request;
+    private DishReserveResponse request;
 
     @Override
     protected void setup() {
@@ -36,7 +36,8 @@ public class Client extends Agent {
             throw new RuntimeException(e);
         }
 
-        OrderRequest rq = new OrderRequest(false, client.ord_dishes);
+        OrderRequest rq = new OrderRequest(client.estimate, client.ord_dishes);
+
         try {
             String message = OrderRequest.mnemonic + " " + new ObjectMapper().writeValueAsString(rq);
 
@@ -65,13 +66,20 @@ public class Client extends Agent {
                     if (reply != null) {
                         if (reply.getPerformative() == ACLMessage.CONFIRM) {
                             try {
-                                request = new ObjectMapper().readValue(Paths.get((String) getArguments()[1]).toFile(), LogClient.class);
+                                request = new ObjectMapper().readValue(reply.getContent(), DishReserveResponse.class);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-                            reservedOK = true;
-                            cookTime = request.cookTime;
-                            System.out.println("We made an order!");
+                            if (client.estimate) {
+                                reservedOK = false;
+                                cookTime = 0;
+                                System.out.println("Время приготовления заказа:" + request.endTime);
+                            } else {
+                                reservedOK = true;
+                                cookTime = request.endTime;
+                                System.out.println("We made an order!");
+                            }
+
                         } else if (reply.getPerformative() == ACLMessage.FAILURE) {
                             reservedOK = false;
                             System.out.println("No order was placed.");

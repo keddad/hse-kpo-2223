@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 public class ClientPull {
 
     public long wait_time;
-
+    public boolean estimate;
     public OrderEntry[] ord_dishes;
 }
