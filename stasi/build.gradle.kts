@@ -19,17 +19,15 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.26")
 }
 
-tasks.jar {
+val fatJar = task("fatJar", type = Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
+        attributes["Implementation-Title"] = "Stasi"
+        attributes["Implementation-Version"] = archiveVersion
         attributes["Main-Class"] = "edu.keddad.stasi.Main"
-        attributes["Class-Path"] = configurations
-                .runtimeClasspath
-                .get()
-                .joinToString(separator = " ") { file ->
-                    "lib/${file.name}"
-                }
     }
-
+    from(configurations.runtimeClasspath.get().map({ if (it.isDirectory) it else zipTree(it) }))
+    with(tasks.jar.get() as CopySpec)
     destinationDirectory.set(file("."))
 }
 
