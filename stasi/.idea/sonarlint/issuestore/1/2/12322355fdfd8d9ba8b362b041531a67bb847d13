@@ -1,8 +1,0 @@
-
-`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
-`	java:S112+"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«äËúÿÿÿÿ
-i
-java:S1450"SRemove the "menu" field and declare it as a local variable in the relevant methods.(˜æ‹
->
-java:S1068"(Remove this unused "menu" private field.(˜æ‹

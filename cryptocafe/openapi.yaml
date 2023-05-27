@@ -1,0 +1,127 @@
+openapi: 3.0.3
+info:
+  title: My little restaraunt
+  license:
+    name: MIT
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+tags:
+  - name: restaraunt
+    description: Restaraunt serivce operations
+  - name: user
+    description: User service operations
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      operationId: createUser
+      description: Create a new user
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+        '400':
+          description: Very much not OK and it's your failure
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+    get:
+      tags:
+        - user
+      operationId: retriveUser
+      description: Get info about current user (from JWT)
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: Existing user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403':
+          description: No JWT / Invalid JWT
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+  /user/login:
+    post:
+      tags:
+        - user
+      operationId: loginUser
+      description: Login a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: john_wick
+                password:
+                  type: string
+                  example: 'woofwoof'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Authorization:
+              schema:
+                type: string
+              description: JWT
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+        '403':
+          description: Wrong auth data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: john_wick
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: 'woofwoof'
+        isManager:
+          type: boolean
+    GenericApiResponse:
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

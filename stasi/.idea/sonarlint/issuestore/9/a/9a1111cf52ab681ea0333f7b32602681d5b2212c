@@ -1,7 +1,0 @@
-
-v
-java:S1104"YMake OrderDishType a static final constant or non-public and provide accessors if needed.(ÿÊÅ8ƒÖò§ğ0
-l
-java:S1104"QMake items a static final constant or non-public and provide accessors if needed.(ÿóèºÿÿÿÿÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¬í¹
-t	java:S116"XRename this field "OrderDishType" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿÊÅ8†Öò§ğ0
