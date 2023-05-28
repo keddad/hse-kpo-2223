@@ -4,7 +4,7 @@ COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle buildFatJar
 
-FROM openjdk:17-jre-slim
+FROM openjdk:17
 
 EXPOSE 8080    
 COPY --from=builder /home/gradle/src/build/libs/org.keddad.cafe-all.jar /app/

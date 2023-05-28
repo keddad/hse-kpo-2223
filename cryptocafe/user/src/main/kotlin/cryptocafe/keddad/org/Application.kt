@@ -1,5 +1,7 @@
 package cryptocafe.keddad.org
 
+// package name is reversed because ktor generator is weird and i'm not fixing that
+
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*

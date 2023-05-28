@@ -57,7 +57,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        '403':
+        '401':
           description: No JWT / Invalid JWT
           content:
             application/json:
@@ -99,6 +99,89 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericApiResponse"
+  /order/create:
+    post:
+      tags:
+        - restaraunt
+      operationId: createOrder
+      description: Create an order
+      security:
+        - jwt: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dishes:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CountedDish'
+                comment:
+                  type: string
+                  example: "Лектора прожарьте лучше, чем в прошлый раз"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        '403':
+          description: Wrong auth data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+        '400':
+          description: Can't reserve order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+  /order/{orderId}:
+    get:
+      tags:
+        - restaraunt
+      operationId: getOrder
+      description: Get current information about an order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dishes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CountedDish'
+                  comment:
+                    type: string
+                    example: "Лектора прожарьте лучше, чем в прошлый раз"
+                  status:
+                    type: string
+                    enum: ["queued", "processed", "done"]
+                  author:
+                    type: integer
+        '404':
+          description: Wrong id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericApiResponse"
+        
+      
 components:
   schemas:
     User:
@@ -120,6 +203,14 @@ components:
       properties:
         message:
           type: string
+    CountedDish:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: integer
+    
   securitySchemes:
     jwt:
       type: http

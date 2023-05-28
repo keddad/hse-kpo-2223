@@ -1,4 +1,6 @@
-package org.keddad.models
+package cryptocafe.keddad.org.models
 
-class GenericApiResponse {
-}
+import kotlinx.serialization.Serializable;
+
+@Serializable
+data class GenericApiResponse(val message: String)

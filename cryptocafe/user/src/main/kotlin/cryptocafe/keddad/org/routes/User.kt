@@ -33,10 +33,12 @@ fun Application.configureUserRoutes(dbConnection: Connection) {
             if (!user.email.contains("@")) {
                 // no way i'm using a regexp
                 call.respond(HttpStatusCode.BadRequest, GenericApiResponse("Malformed email"))
+                return@post
             }
 
             if (user.password == "" || user.username == "") {
                 call.respond(HttpStatusCode.BadRequest, GenericApiResponse("Request can't contain empty fields"))
+                return@post
             }
 
             user.password = hashPassword(user.password)
@@ -58,10 +60,12 @@ fun Application.configureUserRoutes(dbConnection: Connection) {
 
             if (user == null) {
                 call.respond(HttpStatusCode.Unauthorized, GenericApiResponse("Non such username!"))
+                return@post
             }
 
-            if (user!!.password != hashPassword(loginRequest.password)) {
+            if (user.password != hashPassword(loginRequest.password)) {
                 call.respond(HttpStatusCode.Unauthorized, GenericApiResponse("Wrong password!"))
+                return@post
             }
 
             val token = this.application.createUserJwt(user)

@@ -1,0 +1,51 @@
+version: "3"
+
+# We don't have volumes for databases because it is simplier to restart them that way
+
+services:
+  postgres_user:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+
+  postgres_cafe:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+
+  user:
+    build: user
+    restart: always
+    depends_on:
+      - postgres_user
+    environment:
+      - JWT_SECRET=SECRET
+      - DEBUG=
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_URL=jdbc:postgresql://postgres_user/
+
+  cafe:
+    build: cafe
+    restart: always
+    depends_on:
+      - postgres_cafe
+    environment:
+      - JWT_SECRET=SECRET
+      - DEBUG=
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_URL=jdbc:postgresql://postgres_cafe/
+
+  router:
+    build: nginx # prebuild image died with volume premission errors
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user
+      - cafe

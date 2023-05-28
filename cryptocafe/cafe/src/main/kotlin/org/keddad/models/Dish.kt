@@ -1,4 +1,6 @@
 package org.keddad.models
 
-class Disk {
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Dish(val id: Int, val amount: Int)

@@ -1,22 +1,10 @@
-package cryptocafe.keddad.org.plugins
+package org.keddad.plugins
 
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import cryptocafe.keddad.org.models.User
-import cryptocafe.keddad.org.models.UserWithId
 import io.ktor.server.application.*
-import java.util.*
-
-fun Application.createUserJwt(user: UserWithId): String {
-    val token = JWT.create().withIssuer(this.environment.config.property("jwt.domain").getString())
-        .withClaim("username", user.username).withClaim("isManager", user.isManager).withClaim("id", user.id)
-        .withExpiresAt(Date(System.currentTimeMillis() + 6000000))
-        .sign(Algorithm.HMAC256(this.environment.config.property("jwt.secret").getString()))
-
-    return token
-}
 
 fun Application.configureSecurity() {
 
@@ -31,7 +19,7 @@ fun Application.configureSecurity() {
             )
 
             validate { credential ->
-                if (credential.payload.getClaim("username").asString() != "") {
+                if (credential.payload.getClaim("id").asString() != "" && credential.payload.getClaim("isManager").asString() != "") {
                     JWTPrincipal(credential.payload)
                 } else {
                     null
