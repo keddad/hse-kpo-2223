@@ -41,6 +41,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_URL=jdbc:postgresql://postgres_cafe/
 
+  cook:
+    build: cook
+    restart: always
+    depends_on:
+      - cafe
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST=postgres_cafe
+
   router:
     build: nginx # prebuild image died with volume premission errors
     restart: always
