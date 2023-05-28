@@ -15,7 +15,7 @@ class UserService(private val connection: Connection) {
 
         private const val INSERT_USER = "INSERT INTO USERS (EMAIL, PASSWORD, USERNAME, IS_MANAGER) VALUES (?, ?, ?, ?)"
         private const val SELECT_USER_BY_USERNAME =
-            "SELECT (EMAIL, PASSWORD, USERNAME, IS_MANAGER) FROM USERS WHERE USERNAME = ?"
+            "SELECT EMAIL, PASSWORD, USERNAME, IS_MANAGER FROM USERS WHERE USERNAME = ?"
     }
 
     init {
@@ -39,7 +39,7 @@ class UserService(private val connection: Connection) {
         }
     }
 
-    suspend fun read(username: String): User = withContext(Dispatchers.IO) {
+    suspend fun read(username: String): User? = withContext(Dispatchers.IO) {
         val statement = connection.prepareStatement(SELECT_USER_BY_USERNAME)
         statement.setString(1, username)
         val resultSet = statement.executeQuery()
@@ -50,9 +50,9 @@ class UserService(private val connection: Connection) {
                 resultSet.getString("EMAIL")!!,
                 resultSet.getString("PASSWORD")!!,
                 resultSet.getBoolean("IS_MANAGER")
-            );
+            )
         } else {
-            throw Exception("User not found with query $statement")
+            return@withContext null
         }
     }
 }

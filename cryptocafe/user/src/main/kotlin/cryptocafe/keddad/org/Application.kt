@@ -16,12 +16,14 @@ fun Application.module() {
 
     install(CORS) {
         anyHost()
+        allowNonSimpleContentTypes = true
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Post)
         allowMethod(HttpMethod.Get)
         allowHeader(HttpHeaders.AccessControlAllowOrigin)
         allowHeader(HttpHeaders.ContentType)
-        allowHeader(HttpHeaders.Authorization   )
+        allowHeader(HttpHeaders.Authorization)
+        exposeHeader(HttpHeaders.Authorization)
     }
 
     configureSerialization()
